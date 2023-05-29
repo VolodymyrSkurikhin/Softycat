@@ -1,4 +1,8 @@
 import styled from '@emotion/styled';
+// import type * as CSS from 'csstype';
 
-export const Container = styled.div`background-color: #ccffff;
-padding:50px;`
+// const style : CSS.Properties = {
+//   backgroundColor: '#ccffff',  padding:'50px'
+// };
+
+export const Container = styled.div({backgroundColor: '#ccffff',  padding:'50px'});
