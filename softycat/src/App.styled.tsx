@@ -1,8 +1,22 @@
 import styled from '@emotion/styled';
-// import type * as CSS from 'csstype';
+/** @jsxRuntime classic */
+/** @jsx jsx */
+// import { jsx } from '@emotion/react'
+import type * as CSS from 'csstype';
+// import { css } from '@emotion/react';
 
-// const style : CSS.Properties = {
-//   backgroundColor: '#ccffff',  padding:'50px'
-// };
+// interface Style extends CSS.Properties {}
 
-export const Container = styled.div({backgroundColor: '#ccffff',  padding:'50px'});
+const style : CSS.Properties={
+  backgroundColor: '#ccffff',
+  padding: '50px'
+};
+// interface IStyles {...CSS.Properties};
+
+// export const Container = styled('div')<CSS.Properties>({
+//   backgroundColor: '#ccffff',
+//   padding: '50px'});
+
+export const Container = styled('div')(`${style}`);
+  
+// console.log(style);
