@@ -1,7 +1,9 @@
 import React from 'react';
+import { StyledList } from './OwnerList.styled';
 
 interface IItem {
   id: string;
+  url: string;
   title: string;
 }
 
@@ -11,7 +13,7 @@ interface IProps {
 
 const OwnerList: React.FC<IProps> = ({ owners }) => {
   return (
-    <ul>
+    <StyledList>
       {owners.map(item => {
         return (
           <li key={item.id}>
@@ -19,7 +21,7 @@ const OwnerList: React.FC<IProps> = ({ owners }) => {
           </li>
         );
       })}
-    </ul>
+    </StyledList>
   );
 };
 
