@@ -4,6 +4,7 @@ import { StyledCard } from './Card.Styled';
 import { StyledImage } from './Image.styled';
 import { StyledCardContainer } from './StyledCardContainer.styled';
 import { StyledTitle } from './StyledTitle.styled';
+import { StyledImgContainer } from './StyledImgContainer.styled';
 
 interface IItem {
   id: string;
@@ -22,7 +23,9 @@ const OwnerList: React.FC<IProps> = ({ owners }: IProps) => {
         return (
           <StyledCard key={item.id}>
             <StyledCardContainer>
-              <StyledImage src={item.url} alt={item.title} width="100%" />
+              <StyledImgContainer>
+                <StyledImage src={item.url} alt={item.title} width="100%" />
+              </StyledImgContainer>
               <StyledTitle>{item.title}</StyledTitle>
             </StyledCardContainer>
           </StyledCard>
