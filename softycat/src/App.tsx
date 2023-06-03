@@ -1,10 +1,11 @@
 import OwnerList from "./components/OwnerList";
 import { Container } from "./App.styled";
+import list from "./Service/list.json";
 
-const App:React.FC=()=> {
+const App: React.FC = () => {
   return (
     <Container>
-      <OwnerList owners={[{id:"1",title: "text"}]}/>
+      <OwnerList owners={list} />
     </Container>
   );
 }
