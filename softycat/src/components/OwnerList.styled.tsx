@@ -7,7 +7,7 @@ export const StyledList = styled('ul')({
   // flex: "1 200px",
   flexWrap: "wrap",
   alignContent: "space-around",
-  padding: "10px",
+  padding: "12px",
   marginLeft: "-10px",
   marginBottom: "-10px"
 })

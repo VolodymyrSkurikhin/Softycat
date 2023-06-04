@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyledList } from './OwnerList.styled';
-import { StyledCard } from './Card.Styled';
+import { StyledCard } from './StyledCard.styled.tsx';
 import { StyledImage } from './Image.styled';
 import { StyledCardContainer } from './StyledCardContainer.styled';
 import { StyledTitle } from './StyledTitle.styled';
