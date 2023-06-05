@@ -5,8 +5,9 @@ export const StyledList = styled('ul')({
   listStyleType: "none",
   display: "flex",
   flexWrap: "wrap",
-  alignContent: "space-around",
+  gap: "10px",
+  alignContent: "space-between",
   padding: "12px",
-  marginLeft: "-10px",
-  marginBottom: "-10px"
+  // marginLeft: "-10px",
+  // marginBottom: "-10px"
 })
