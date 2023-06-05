@@ -4,7 +4,6 @@ export const StyledList = styled('ul')({
   boxSizing: "border-box",
   listStyleType: "none",
   display: "flex",
-  // flex: "1 200px",
   flexWrap: "wrap",
   alignContent: "space-around",
   padding: "12px",
