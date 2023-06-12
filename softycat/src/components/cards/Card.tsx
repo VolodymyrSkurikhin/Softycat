@@ -1,5 +1,5 @@
 // import React from "react";
-import { StyledCard } from "./StyledCard.styled.tsx";
+import { StyledCard } from "../cards";
 
 
 export const Card = () => { <StyledCard /> }

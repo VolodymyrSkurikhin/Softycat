@@ -14,4 +14,3 @@ const style: CSS.Properties = {
 //   padding: '50px'});
 
 export const Container = styled('div')(`${style}`);
-

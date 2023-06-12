@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyledList } from './OwnerList.styled';
-import { StyledCard } from './StyledCard.styled.tsx';
+import { StyledList, StyledCard, StyledCardContainer, StyledTitle, StyledImgContainer, Image } from '../cards';
+// import { StyledCard } from './StyledCard.styled';
 // import { StyledImage } from './Image.styled';
-import { StyledCardContainer } from './StyledCardContainer.styled';
-import { StyledTitle } from './StyledTitle.styled';
-import { StyledImgContainer } from './StyledImgContainer.styled';
-import { Image } from './Image';
+// import { StyledCardContainer } from './StyledCardContainer.styled';
+// import { StyledTitle } from './StyledTitle.styled';
+// import { StyledImgContainer } from './StyledImgContainer.styled';
+// import { Image } from './Image';
 
 interface IItem {
   id: string;
@@ -17,7 +17,7 @@ interface IProps {
   owners: IItem[];
 }
 
-const OwnerList: React.FC<IProps> = ({ owners }: IProps) => {
+export const OwnerList: React.FC<IProps> = ({ owners }: IProps) => {
   return (
     <StyledList>
       {owners.map(item => {
@@ -36,4 +36,4 @@ const OwnerList: React.FC<IProps> = ({ owners }: IProps) => {
   );
 };
 
-export default OwnerList;
+// export default OwnerList;

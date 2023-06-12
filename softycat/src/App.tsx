@@ -1,7 +1,8 @@
-import OwnerList from "./components/cards/OwnerList";
-import { Container } from "./App.styled";
+import { Routes, Route } from "react-router-dom";
+import { Home } from "./pages/Home";
+// import { Container } from "./App.styled";
 import { CommonContainer, Header, Nav, Logo, Link } from "./components/common/Common.styled";
-import list from "./Service/list.json";
+// import list from "./Service/list.json";
 
 const App: React.FC = () => {
   return (<CommonContainer>
@@ -10,12 +11,15 @@ const App: React.FC = () => {
       <Nav>
         <Link to="/about">About
         </Link>
-        <Link to="/cats">Cats</Link>
+        <Link to="/home">Cats</Link>
       </Nav>
     </Header>
-    <Container>
+    <Routes>
+      <Route path="/home" element={<Home />} />
+    </Routes>
+    {/* <Container>
       <OwnerList owners={list} />
-    </Container>
+    </Container> */}
   </CommonContainer>
   );
 }
