@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import Animal from "react-animals";
 import { Home } from "./pages/Home";
 // import { Container } from "./App.styled";
 import { CommonContainer, Header, Nav, Logo, Link } from "./components/common/Common.styled";
@@ -7,7 +8,9 @@ import { CommonContainer, Header, Nav, Logo, Link } from "./components/common/Co
 const App: React.FC = () => {
   return (<CommonContainer>
     <Header>
-      <Logo>Test</Logo>
+      <Logo>
+        <Animal name="cheetah" size="75px" dance rounded />
+      </Logo>
       <Nav>
         <Link to="/about">About
         </Link>
