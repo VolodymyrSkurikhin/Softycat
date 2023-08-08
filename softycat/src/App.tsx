@@ -1,17 +1,17 @@
 import { Routes, Route } from "react-router-dom";
-import Animal from "react-animals";
+// import Animal from "react-animals";
 import { Home } from "./pages/Home";
 import { SignUp } from "./pages/Signup";
 // import { Container } from "./App.styled";
-import { CommonContainer, Header, Nav, Logo, Link } from "./components/common/Common.styled";
+import { CommonContainer, Header, Nav, Link } from "./components/common/Common.styled";
 // import list from "./Service/list.json";
 
 const App: React.FC = () => {
   return (<CommonContainer>
     <Header>
-      <Logo>
+      {/* <Logo>
         <Animal name="cheetah" size="75px" dance rounded />
-      </Logo>
+      </Logo> */}
       <Nav>
         <Link to="/about">About
         </Link>

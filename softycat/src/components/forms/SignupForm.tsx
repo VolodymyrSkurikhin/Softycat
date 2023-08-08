@@ -1,16 +1,16 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { SignupFormStyled, FormContainer, InputStyled } from "../forms";
+import { registerUser } from "../../Service/axiosFns";
 
 type Inputs = {
   name: string,
   email: string,
   password: string,
-  repeatPassword: string
 };
 
 export function SignupForm() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = data => registerUser(data);
 
   console.log(watch("name")) // watch input value by passing the name of it
 
@@ -27,10 +27,6 @@ export function SignupForm() {
         <InputStyled placeholder="Password"{...register("password", { required: true })} />
         {/* errors will return when field validation fails  */}
         {errors.password && <span>This field is required</span>}
-        <InputStyled placeholder="Repeat Password"{...register("repeatPassword", { required: true })} />
-        {/* errors will return when field validation fails  */}
-        {errors.repeatPassword && <span>This field is required</span>}
-
         <InputStyled type="submit" />
       </SignupFormStyled>
     </FormContainer>

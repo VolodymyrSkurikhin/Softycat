@@ -1,16 +1,19 @@
 import styled from '@emotion/styled';
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import type * as CSS from 'csstype';
+// import type * as CSS from 'csstype';
 
 
-const style: CSS.Properties = {
-  backgroundColor: '#ccffff',
-  padding: '50px'
-};
+// const style: CSS.Properties = {
+//   backgroundColor: '#ccffff',
+//   padding: '50px'
+// };
 
 // export const Container = styled('div')<CSS.Properties>({
 //   backgroundColor: '#ccffff',
 //   padding: '50px'});
 
-export const Container = styled('div')(`${style}`);
+export const Container = styled('div')({
+  backgroundColor: '#ccffff',
+  padding: '50px'
+});
