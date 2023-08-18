@@ -12,8 +12,8 @@ export const CommonContainer = styled('div')({
 export const Header = styled('header')({
   display: "flex",
   alignItems: "center",
-  justifyContent: "space - between",
-  gap: "12px",
+  justifyContent: "space-between",
+  // gap: "12px",
   padding: "8px 0",
   marginBottom: "16px",
   borderBottom: "1px solid black"
@@ -29,8 +29,17 @@ export const Link = styled(NavLink)({
 }
 )
 
-export const Nav = styled('nav')({
-  display: "flex"
+export const NavStart = styled('nav')({
+  display: "flex",
+  justifyContent: "space-between",
+  // alignSelf: "start"
+})
+export const NavEnd = styled('nav')({
+  display: "flex",
+  justifyContent: "space-between",
+  gap: "24px",
+
+  // alignSelf: "end"
 })
 
 

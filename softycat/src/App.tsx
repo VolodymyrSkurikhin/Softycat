@@ -3,7 +3,10 @@ import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { SignUp } from "./pages/Signup";
 // import { Container } from "./App.styled";
-import { CommonContainer, Header, Nav, Link } from "./components/common/Common.styled";
+import { CommonContainer, Header, NavStart, NavEnd, Link } from "./components/common/Common.styled";
+// import { RegBtnContainer } from "./components/RegBtns/RegBtnContainer.styled";
+// import { RegBtn } from "./components/RegBtns/RegBtn.styled";
+import { RegBtnContainer } from "./components/RegBtns/RegBtnContainer.styled";
 // import list from "./Service/list.json";
 
 const App: React.FC = () => {
@@ -12,16 +15,22 @@ const App: React.FC = () => {
       {/* <Logo>
         <Animal name="cheetah" size="75px" dance rounded />
       </Logo> */}
-      <Nav>
+      <NavStart>
         <Link to="/about">About
         </Link>
         <Link to="/home">Cats</Link>
-        <Link to="/SignUp">SignUp</Link>
-      </Nav>
+        {/* <Link to="/SignUp">SignUp</Link> */}
+      </NavStart>
+      <NavEnd>
+        <RegBtnContainer />
+        {/* <RegBtn to="/register">Register</RegBtn>
+        <RegBtn to="/login">Login</RegBtn> */}
+        {/* </RegBtnContainer> */}
+      </NavEnd>
     </Header>
     <Routes>
       <Route path="/home" element={<Home />} />
-      <Route path="/signup" element={<SignUp />} />
+      <Route path="/register" element={<SignUp />} />
     </Routes>
     {/* <Container>
       <OwnerList owners={list} />

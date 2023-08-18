@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 
 axios.defaults.baseURL = 'http://localhost:4000/api';
@@ -12,36 +12,34 @@ interface IRegisterData {
 //   name: string,
 //   password: string
 // }
+interface IResponse {
+  regResponse: AxiosResponse<any, any>,
+  loginResponse: AxiosResponse<any, any>
+}
 
-export async function registerUser(regData: IRegisterData) {
-  const unMessage = "Unexpected error occured";
+export async function registerUser(regData: IRegisterData): Promise<IResponse> {
+  // let regResponse;
+  // let loginResponse;
   try {
     const regResponse = await axios.post('/auth/register', regData);
     console.log(regResponse);
     if (regResponse.status === 201) {
       const loginResponse = await axios.post('auth/login', regData);
       console.log(loginResponse);
+      axios.defaults.headers.common['Authorization'] = loginResponse.data.token;
+      return ({ regResponse, loginResponse });
     }
-    //   } catch (error) {
-    //     // console.error(error);
-    //     // let err = axiosError;
-    //     return {
-    //       err: {
-    //         status: error.response?.status,
-    //         message: error.message
-    //       }
-    //     }
-    //   }
-    // }
+    throw new Error(`Unexpected status: ${regResponse.status}`);
   }
   catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error.response?.status);
       console.log(error.response?.data);
+      throw new Error(`${error.response?.status}`);
 
     } else {
       // console.log(error);
-      return unMessage
+      throw new Error("Unexpected error occured");
     }
   }
 }

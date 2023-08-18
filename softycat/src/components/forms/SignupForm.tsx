@@ -1,6 +1,7 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { SignupFormStyled, FormContainer, InputStyled } from "../forms";
 import { registerUser } from "../../Service/axiosFns";
+import { useUser } from "../userContext";
 
 type Inputs = {
   name: string,
@@ -10,7 +11,12 @@ type Inputs = {
 
 export function SignupForm() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = data => registerUser(data);
+  const { logIn } = useUser();
+  const onSubmit: SubmitHandler<Inputs> = async formData => {
+    const { regResponse } = await registerUser(formData);
+    const { name } = regResponse.data;
+    logIn(name);
+  };
 
   console.log(watch("name")) // watch input value by passing the name of it
 
