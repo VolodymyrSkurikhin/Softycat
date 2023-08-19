@@ -6,7 +6,8 @@ import { SignUp } from "./pages/Signup";
 import { CommonContainer, Header, NavStart, NavEnd, Link } from "./components/common/Common.styled";
 // import { RegBtnContainer } from "./components/RegBtns/RegBtnContainer.styled";
 // import { RegBtn } from "./components/RegBtns/RegBtn.styled";
-import { RegBtnContainer } from "./components/RegBtns/RegBtnContainer.styled";
+import { RegBtnContainer } from "./components/RegBtns/RegBtnContainer";
+import { Logout } from "./pages/Logout";
 // import list from "./Service/list.json";
 
 const App: React.FC = () => {
@@ -31,6 +32,7 @@ const App: React.FC = () => {
     <Routes>
       <Route path="/home" element={<Home />} />
       <Route path="/register" element={<SignUp />} />
+      <Route path="/logout" element={<Logout />} />
     </Routes>
     {/* <Container>
       <OwnerList owners={list} />
