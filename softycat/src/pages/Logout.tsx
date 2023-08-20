@@ -1,16 +1,15 @@
 import styled from "@emotion/styled"
 import { useUser } from "../components/userContext";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { logoutUser } from "../Service/axiosFns";
 
 export const Logout = () => {
-  const { logOut } = useUser();
+  const { logOut, isLoggedIn } = useUser();
   const navigate = useNavigate();
-  // if (!isLoggedIn) {
-  //   alert("You are not loggedin!");
-  //   navigate("/home");
-  //   return;
-  // }
+  if (!isLoggedIn) {
+    alert("You are not loggedin!");
+    return <Navigate to="/login" />;
+  }
   const LogoutContainer = styled('div')({
     padding: "8px 16px",
     borderRadius: "8px",
@@ -26,5 +25,5 @@ export const Logout = () => {
     alert(`${logoutResponse}`);
     navigate("/home");
   }
-  return (<LogoutContainer onSubmit={handleSubmit}>Press here, if you sure want to logout</LogoutContainer>)
+  return (<LogoutContainer onClick={handleSubmit}>Press here, if you sure want to logout</LogoutContainer>)
 }

@@ -2,6 +2,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { SignupFormStyled, FormContainer, InputStyled } from "../forms";
 import { registerUser } from "../../Service/axiosFns";
 import { useUser } from "../userContext";
+import { useNavigate } from "react-router-dom";
 
 type Inputs = {
   name: string,
@@ -10,12 +11,20 @@ type Inputs = {
 };
 
 export function SignupForm() {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
+  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<Inputs>();
   const { logIn } = useUser();
+  const navigate = useNavigate();
   const onSubmit: SubmitHandler<Inputs> = async formData => {
-    const { regResponse } = await registerUser(formData);
-    const { name } = regResponse.data;
-    logIn(name);
+
+    const res = await registerUser(formData);
+    if (res.success) {
+      const name = res.name;
+      logIn(name);
+      navigate("/home");
+    } else {
+      alert(`${res.errorReason}`);
+      reset();
+    }
   };
 
   console.log(watch("name")) // watch input value by passing the name of it
