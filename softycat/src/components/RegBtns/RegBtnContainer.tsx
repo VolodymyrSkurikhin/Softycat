@@ -13,7 +13,7 @@ export const RegBtnContainer = () => {
     return (<><RegBtn to="/register">Register</RegBtn>
       <RegBtn to="/login">Login</RegBtn></>)
   } else {
-    return (<><RegBtn to="">{username}</RegBtn>
+    return (<><RegBtn to="/home">{username}</RegBtn>
       <RegBtn to="/logout">Logout</RegBtn></>)
   }
 }

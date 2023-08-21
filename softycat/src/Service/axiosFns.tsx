@@ -17,12 +17,12 @@ interface ILoginData {
 //   regResponse: AxiosResponse<any, any>,
 //   loginResponse: AxiosResponse<any, any>,
 // }
-interface ILoginResponse {
-  loginResponse: AxiosResponse<any, any>
-}
-interface ILogoutResponse {
-  logoutResponse: AxiosResponse<any, any>,
-}
+// interface ILoginResponse {
+//   loginResponse: AxiosResponse<any, any>
+// }
+// interface ILogoutResponse {
+//   logoutResponse: AxiosResponse<any, any>,
+// }
 
 interface ISuccessResult {
   success: true;
@@ -55,10 +55,10 @@ export async function registerUser(regData: IRegisterData): Promise<ISuccessResu
   try {
     const regResponse = await axios.post('/auth/register', regData);
     console.log(regResponse);
-    if (regResponse.status === 409) {
-      // alert("Email is already in use");
-      return ({ success: false, errorReason: `Email is already in use` });
-    }
+    // if (regResponse.status === 409) {
+    //   // alert("Email is already in use");
+    //   return ({ success: false, errorReason: `Email is already in use` });
+    // }
     if (regResponse.status === 201) {
       const loginResponse = await axios.post('auth/login', regData);
       console.log(loginResponse);
@@ -92,18 +92,26 @@ export async function registerUser(regData: IRegisterData): Promise<ISuccessResu
   }
 }
 
-export async function loginUser(loginData: ILoginData): Promise<ILoginResponse> {
+export async function loginUser(loginData: ILoginData): Promise<ISuccessResult | IErrorResult> {
   try {
     const loginResponse = await axios.post('auth/login', loginData);
     console.log(loginResponse);
     axios.defaults.headers.common['Authorization'] = loginResponse.data.token;
-    return ({ loginResponse });
+    return {
+      success: true,
+      name: loginResponse.data.name,
+
+    };
   }
   catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error.response?.status);
       console.log(error.response?.data);
-      throw new Error(`${error.response?.status}`);
+      return {
+        success: false,
+        errorReason: `${error.response?.data.message}`
+      }
+      // throw new Error(`${error.response?.status}`);
 
     } else {
       // console.log(error);
@@ -111,18 +119,19 @@ export async function loginUser(loginData: ILoginData): Promise<ILoginResponse> 
     }
   }
 }
-export async function logoutUser(): Promise<ILogoutResponse> {
+export async function logoutUser(): Promise<AxiosResponse<any, any>> {
   try {
     const logoutResponse = await axios.post('auth/logout');
     console.log(logoutResponse);
     axios.defaults.headers.common['Authorization'] = "";
-    return ({ logoutResponse });
+    return logoutResponse;
   }
   catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error.response?.status);
       console.log(error.response?.data);
-      throw new Error(`${error.response?.status}`);
+      return error.response?.data.message;
+      // throw new Error(`${error.response?.status}`);
 
     } else {
       // console.log(error);

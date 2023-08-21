@@ -8,6 +8,7 @@ import { CommonContainer, Header, NavStart, NavEnd, Link } from "./components/co
 // import { RegBtn } from "./components/RegBtns/RegBtn.styled";
 import { RegBtnContainer } from "./components/RegBtns/RegBtnContainer";
 import { Logout } from "./pages/Logout";
+import { Login } from "./pages/Login";
 // import list from "./Service/list.json";
 
 const App: React.FC = () => {
@@ -32,6 +33,7 @@ const App: React.FC = () => {
     <Routes>
       <Route path="/home" element={<Home />} />
       <Route path="/register" element={<SignUp />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/logout" element={<Logout />} />
     </Routes>
     {/* <Container>

@@ -20,7 +20,7 @@ export function SignupForm() {
     if (res.success) {
       const name = res.name;
       logIn(name);
-      navigate("/home");
+      navigate("/home", { replace: true });
     } else {
       alert(`${res.errorReason}`);
       reset();

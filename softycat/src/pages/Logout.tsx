@@ -21,9 +21,12 @@ export const Logout = () => {
   );
   const handleSubmit = async () => {
     const logoutResponse = await logoutUser();
-    logOut();
-    alert(`${logoutResponse}`);
-    navigate("/home");
+    if (logoutResponse.status === 200) {
+      logOut();
+      alert(`${logoutResponse.data.message}`);
+      navigate("/home");
+    } else { alert(`${logoutResponse.data.message}`) }
+
   }
   return (<LogoutContainer onClick={handleSubmit}>Press here, if you sure want to logout</LogoutContainer>)
 }

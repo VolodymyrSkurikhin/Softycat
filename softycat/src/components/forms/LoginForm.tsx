@@ -2,7 +2,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { SignupFormStyled, FormContainer, InputStyled } from ".";
 import { loginUser } from "../../Service/axiosFns";
 import { useUser } from "../userContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 type Inputs = {
   email: string,
@@ -10,18 +10,24 @@ type Inputs = {
 };
 
 export function LoginForm() {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
-  // const navigate = useNavigate();
+  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<Inputs>();
+  const navigate = useNavigate();
   const { logIn, isLoggedIn } = useUser();
   if (isLoggedIn) {
     alert("You are loggedin already!");
     // navigate("/home");
-    return <Navigate to="/home" />;
+    return <Navigate to="/home" replace={true} />;
   } else {
     const onSubmit: SubmitHandler<Inputs> = async formData => {
-      const { loginResponse } = await loginUser(formData);
-      const { name } = loginResponse.data;
-      logIn(name);
+      const res = await loginUser(formData);
+      if (res.success) {
+        const name = res.name;
+        logIn(name);
+        navigate("/home", { replace: true });
+      } else {
+        alert(`${res.errorReason}`);
+        reset();
+      }
     };
 
     console.log(watch("email")) // watch input value by passing the name of it
