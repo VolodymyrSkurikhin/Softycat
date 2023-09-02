@@ -21,8 +21,8 @@ export function LoginForm() {
     const onSubmit: SubmitHandler<Inputs> = async formData => {
       const res = await loginUser(formData);
       if (res.success) {
-        const name = res.name;
-        logIn(name);
+        const { name, email, avatarURL } = res;
+        logIn(name, email, avatarURL);
         navigate("/home", { replace: true });
       } else {
         alert(`${res.errorReason}`);

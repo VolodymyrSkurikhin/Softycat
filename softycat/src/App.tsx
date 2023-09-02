@@ -9,9 +9,12 @@ import { CommonContainer, Header, NavStart, NavEnd, Link } from "./components/co
 import { RegBtnContainer } from "./components/RegBtns/RegBtnContainer";
 import { Logout } from "./pages/Logout";
 import { Login } from "./pages/Login";
+import { Profile } from "./pages/Profile";
+import { useUser } from "./components/userContext";
 // import list from "./Service/list.json";
 
 const App: React.FC = () => {
+  const { isLoggedIn } = useUser();
   return (<CommonContainer>
     <Header>
       {/* <Logo>
@@ -32,9 +35,10 @@ const App: React.FC = () => {
     </Header>
     <Routes>
       <Route path="/home" element={<Home />} />
-      <Route path="/register" element={<SignUp />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/logout" element={<Logout />} />
+      <Route path="/register" element={isLoggedIn ? <Home /> : <SignUp />} />
+      <Route path="/login" element={isLoggedIn ? <Home /> : <Login />} />
+      <Route path="/logout" element={isLoggedIn ? <Logout /> : <Home />} />
+      <Route path="/profile" element={isLoggedIn ? <Profile /> : <Home />} />
     </Routes>
     {/* <Container>
       <OwnerList owners={list} />

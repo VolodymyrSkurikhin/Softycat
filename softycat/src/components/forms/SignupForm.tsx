@@ -18,8 +18,8 @@ export function SignupForm() {
 
     const res = await registerUser(formData);
     if (res.success) {
-      const name = res.name;
-      logIn(name);
+      const { name, email, avatarURL } = res;
+      logIn(name, email, avatarURL);
       navigate("/home", { replace: true });
     } else {
       alert(`${res.errorReason}`);
