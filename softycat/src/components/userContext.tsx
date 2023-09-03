@@ -6,7 +6,7 @@ interface IUserContext {
   email: string,
   avatarURL: string,
   isShown: boolean,
-  logIn(name: string, email: string, avatarURL: string): void,
+  logIn(name: string, email: string, avatarURL: string, isShown: boolean): void,
   showHide(isShown: boolean): void,
   logOut(): void
 }
@@ -28,11 +28,12 @@ export const UserProvider = ({ children }: any) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [avatarURL, setAvatarURL] = useState("");
-  const logIn = (username: string, email: string, avatarURL: string) => {
+  const logIn = (username: string, email: string, avatarURL: string, isShown: boolean) => {
     setIsLoggedIn(true);
     setUsername(username);
     setEmail(email);
     setAvatarURL(avatarURL);
+    setIsShown(isShown);
   };
   const showHide = (isShown: boolean) => setIsShown(isShown);
   // const hide = () => setIsShown(false);

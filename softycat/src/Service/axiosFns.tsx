@@ -18,7 +18,8 @@ interface ISuccessResult {
   success: true;
   name: string;
   email: string,
-  avatarURL: string
+  avatarURL: string,
+  isShown: boolean
 }
 export interface IUser {
   _id: string,
@@ -65,6 +66,7 @@ export async function registerUser(regData: IRegisterData): Promise<ISuccessResu
         name: loginResponse.data.name,
         email: loginResponse.data.email,
         avatarURL: loginResponse.data.avatarURL,
+        isShown: loginResponse.data.isShown
       }
       // return ({ success:true,name: });
     } else
@@ -98,8 +100,9 @@ export async function loginUser(loginData: ILoginData): Promise<ISuccessResult |
     return {
       success: true,
       name: loginResponse.data.name,
-      email: loginResponse.data.name,
-      avatarURL: loginResponse.data.name,
+      email: loginResponse.data.email,
+      avatarURL: loginResponse.data.avatarURL,
+      isShown: loginResponse.data.isShown
     };
   }
   catch (error) {

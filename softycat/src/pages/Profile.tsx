@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import { updateIsShown } from "../Service/axiosFns"
 import { StyledBtn } from "../components/profile/StyledBtn"
 import { StyledContainer } from "../components/profile/StyledContainer"
@@ -11,9 +12,11 @@ import { useUser } from "../components/userContext"
 
 export const Profile: React.FC = () => {
   const { username, email, avatarURL, isShown, showHide } = useUser();
+  const navigate = useNavigate();
   const changeBtn = async () => {
     const isShown = await updateIsShown();
     showHide(isShown);
+    navigate("/home", { replace: true });
   };
   return (<StyledContainer>
     <StyledLine>
@@ -32,9 +35,8 @@ export const Profile: React.FC = () => {
       <StyledBtn type="button">Change</StyledBtn>
     </StyledLine>
     <StyledLine>
-      {isShown ? <StyledShowYourselfBtn onSubmit={changeBtn}>Show your cats</StyledShowYourselfBtn> :
-        <StyledShowYourselfBtn onSubmit={changeBtn}>Hide your cats</StyledShowYourselfBtn>}
-
+      {isShown ? <StyledShowYourselfBtn onClick={changeBtn}>Hide your cats</StyledShowYourselfBtn> :
+        <StyledShowYourselfBtn onClick={changeBtn}>Show your cats</StyledShowYourselfBtn>}
     </StyledLine>
   </StyledContainer>)
 }
