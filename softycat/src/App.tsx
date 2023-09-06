@@ -14,7 +14,7 @@ import { useUser } from "./components/userContext";
 // import list from "./Service/list.json";
 
 const App: React.FC = () => {
-  const { isLoggedIn } = useUser();
+  const { token } = useUser();
   return (<CommonContainer>
     <Header>
       {/* <Logo>
@@ -35,10 +35,10 @@ const App: React.FC = () => {
     </Header>
     <Routes>
       <Route path="/home" element={<Home />} />
-      <Route path="/register" element={isLoggedIn ? <Home /> : <SignUp />} />
-      <Route path="/login" element={isLoggedIn ? <Home /> : <Login />} />
-      <Route path="/logout" element={isLoggedIn ? <Logout /> : <Home />} />
-      <Route path="/profile" element={isLoggedIn ? <Profile /> : <Home />} />
+      <Route path="/register" element={token ? <Home /> : <SignUp />} />
+      <Route path="/login" element={token ? <Home /> : <Login />} />
+      <Route path="/logout" element={token ? <Logout /> : <Home />} />
+      <Route path="/profile" element={token ? <Profile /> : <Home />} />
     </Routes>
     {/* <Container>
       <OwnerList owners={list} />

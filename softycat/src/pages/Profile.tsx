@@ -11,17 +11,20 @@ import { useUser } from "../components/userContext"
 
 
 export const Profile: React.FC = () => {
-  const { username, email, avatarURL, isShown, showHide } = useUser();
+  const { name, email, avatarURL, isShown, showHide } = useUser();
+  console.log(isShown);
+  console.log(name);
+  console.log(avatarURL);
   const navigate = useNavigate();
   const changeBtn = async () => {
-    const isShown = await updateIsShown();
-    showHide(isShown);
+    const newIsShown = await updateIsShown();
+    showHide(newIsShown);
     navigate("/home", { replace: true });
   };
   return (<StyledContainer>
     <StyledLine>
       <StyledItem>Name</StyledItem>
-      <StyledItemValue>{username}</StyledItemValue>
+      <StyledItemValue>{name}</StyledItemValue>
       <StyledBtn type="button">Change</StyledBtn>
     </StyledLine>
     <StyledLine>

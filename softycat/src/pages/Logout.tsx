@@ -4,9 +4,9 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { logoutUser } from "../Service/axiosFns";
 
 export const Logout = () => {
-  const { logOut, isLoggedIn } = useUser();
+  const { logOut, token } = useUser();
   const navigate = useNavigate();
-  if (!isLoggedIn) {
+  if (!token) {
     alert("You are not loggedin!");
     return <Navigate to="/login" />;
   }
@@ -21,11 +21,16 @@ export const Logout = () => {
   );
   const handleSubmit = async () => {
     const logoutResponse = await logoutUser();
-    if (logoutResponse.status === 200) {
+    if (logoutResponse.success === true) {
       logOut();
-      alert(`${logoutResponse.data.message}`);
+      localStorage.removeItem("user");
+      alert(`${logoutResponse.logoutMessage}`);
       navigate("/home");
-    } else { alert(`${logoutResponse.data.message}`) }
+    } else if (logoutResponse.errorStatus === 401) {
+      alert(`You are not logged in`);
+      return <Navigate to="/home" />;
+    } alert(`Something went wrong.Try again`);
+    return <Navigate to="/home" />;
 
   }
   return (<LogoutContainer onClick={handleSubmit}>Press here, if you sure want to logout</LogoutContainer>)

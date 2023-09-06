@@ -3,6 +3,7 @@ import { SignupFormStyled, FormContainer, InputStyled } from "../forms";
 import { registerUser } from "../../Service/axiosFns";
 import { useUser } from "../userContext";
 import { useNavigate } from "react-router-dom";
+import { saveUser } from "../../Service/LocalStorageFns";
 
 type Inputs = {
   name: string,
@@ -18,8 +19,9 @@ export function SignupForm() {
 
     const res = await registerUser(formData);
     if (res.success) {
-      const { name, email, avatarURL, isShown } = res;
-      logIn(name, email, avatarURL, isShown);
+      const { name, email, avatarURL, isShown, token } = res;
+      saveUser('user', { name, email, avatarURL, isShown, token });
+      logIn(name, email, avatarURL, isShown, token);
       navigate("/home", { replace: true });
     } else {
       alert(`${res.errorReason}`);

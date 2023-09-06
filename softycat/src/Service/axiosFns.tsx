@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 
 axios.defaults.baseURL = 'http://localhost:4000/api';
@@ -19,7 +19,8 @@ interface ISuccessResult {
   name: string;
   email: string,
   avatarURL: string,
-  isShown: boolean
+  isShown: boolean,
+  token: string
 }
 export interface IUser {
   _id: string,
@@ -36,6 +37,17 @@ interface IAllUsersSuccessResult {
 interface IErrorResult {
   success: false;
   errorReason: string;
+}
+
+interface ILogoutSuccessResult {
+  success: true;
+  logoutMessage: string;
+}
+
+interface ILogoutErrorResult {
+  success: false;
+  errorReason: string;
+  errorStatus: number;
 }
 
 // const res = await registerUser(...);
@@ -66,7 +78,8 @@ export async function registerUser(regData: IRegisterData): Promise<ISuccessResu
         name: loginResponse.data.name,
         email: loginResponse.data.email,
         avatarURL: loginResponse.data.avatarURL,
-        isShown: loginResponse.data.isShown
+        isShown: loginResponse.data.isShown,
+        token: loginResponse.data.token
       }
       // return ({ success:true,name: });
     } else
@@ -102,7 +115,8 @@ export async function loginUser(loginData: ILoginData): Promise<ISuccessResult |
       name: loginResponse.data.name,
       email: loginResponse.data.email,
       avatarURL: loginResponse.data.avatarURL,
-      isShown: loginResponse.data.isShown
+      isShown: loginResponse.data.isShown,
+      token: loginResponse.data.token
     };
   }
   catch (error) {
@@ -121,19 +135,30 @@ export async function loginUser(loginData: ILoginData): Promise<ISuccessResult |
     }
   }
 }
-export async function logoutUser(): Promise<AxiosResponse<any, any>> {
+export async function logoutUser(): Promise<ILogoutSuccessResult | ILogoutErrorResult> {
   try {
     const logoutResponse = await axios.post('auth/logout');
     console.log(logoutResponse);
+    // if (logoutResponse.status === 200) {
     axios.defaults.headers.common['Authorization'] = "";
-    return logoutResponse;
+    return {
+      success: true,
+      logoutMessage: logoutResponse.data.message
+    }
+    // }
   }
   catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error.response?.status);
       console.log(error.response?.data);
-      // return error.response?.data.message;
-      throw new Error(`${error.response?.status}`);
+      if (error.response?.status === 401) {
+        return {
+          success: false,
+          errorReason: error.response?.data.message,
+          errorStatus: 401
+        };
+        // return error.response?.data.message;
+      } throw new Error(`${error.response?.status}`);
 
     } else {
       // console.log(error);

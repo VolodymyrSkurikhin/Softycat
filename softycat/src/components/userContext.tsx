@@ -1,13 +1,16 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+import { loadUser } from "../Service/LocalStorageFns";
 
 interface IUserContext {
-  isLoggedIn: boolean,
-  username: string,
+  // isLoggedIn: boolean,
+  name: string,
   email: string,
   avatarURL: string,
   isShown: boolean,
-  logIn(name: string, email: string, avatarURL: string, isShown: boolean): void,
-  showHide(isShown: boolean): void,
+  token: string,
+  logIn(name: string, email: string, avatarURL: string, isShown: boolean, token: string): void,
+  showHide(newIsShown: boolean): void,
   logOut(): void
 }
 
@@ -23,28 +26,40 @@ const UserContext = createContext<IUserContext>(null!);
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }: any) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isShown, setIsShown] = useState(false);
-  const [username, setUsername] = useState("");
+  const [name, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [avatarURL, setAvatarURL] = useState("");
-  const logIn = (username: string, email: string, avatarURL: string, isShown: boolean) => {
-    setIsLoggedIn(true);
-    setUsername(username);
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    const userInfo = loadUser('user');
+    if (!userInfo) { return };
+    setUsername(userInfo.name);
+    setEmail(userInfo.email);
+    setAvatarURL(userInfo.avatarURL);
+    setIsShown(userInfo.isShown);
+    setToken(userInfo.token);
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+  }, [name, email, avatarURL, isShown, token]);
+  const logIn = (name: string, email: string, avatarURL: string, isShown: boolean, token: string) => {
+    setUsername(name);
     setEmail(email);
     setAvatarURL(avatarURL);
     setIsShown(isShown);
+    setToken(token)
   };
-  const showHide = (isShown: boolean) => setIsShown(isShown);
+  const showHide = (newIsShown: boolean) => setIsShown(newIsShown);
   // const hide = () => setIsShown(false);
 
   const logOut = () => {
-    setIsLoggedIn(false);
+    // setIsLoggedIn(false);
+    setToken('');
     setUsername("");
   };
 
   return (
-    <UserContext.Provider value={{ isLoggedIn, username, email, avatarURL, isShown, logIn, showHide, logOut }}>
+    <UserContext.Provider value={{ name, email, avatarURL, isShown, token, logIn, showHide, logOut }}>
       {children}
     </UserContext.Provider>
   );
