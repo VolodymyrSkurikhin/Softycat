@@ -8,12 +8,12 @@ import { RegBtn } from "./RegBtn.styled";
 // })
 
 export const RegBtnContainer = () => {
-  const { isLoggedIn, username } = useUser();
-  if (!isLoggedIn) {
+  const { token, name } = useUser();
+  if (!token) {
     return (<><RegBtn to="/register">Register</RegBtn>
       <RegBtn to="/login">Login</RegBtn></>)
   } else {
-    return (<><RegBtn to="/profile">{username}</RegBtn>
+    return (<><RegBtn to="/profile">{name}</RegBtn>
       <RegBtn to="/logout">Logout</RegBtn></>)
   }
 }

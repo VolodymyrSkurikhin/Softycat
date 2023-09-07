@@ -28,7 +28,10 @@ export const Logout = () => {
       navigate("/home");
     } else if (logoutResponse.errorStatus === 401) {
       alert(`You are not logged in`);
-      return <Navigate to="/home" />;
+      logOut();
+      localStorage.removeItem("user");
+      navigate("/home");
+      return;
     } alert(`Something went wrong.Try again`);
     return <Navigate to="/home" />;
 
