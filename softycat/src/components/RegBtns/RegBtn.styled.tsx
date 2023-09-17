@@ -10,6 +10,10 @@ export const RegBtn = styled(NavLink)({
   color: "black",
   backgroundColor: "grey",
   fontWeight: "500",
-  '&.active': { backgroundColor: "orangered" }
+  '&.active': { backgroundColor: "orangered" },
+  ":hover": {
+    backgroundColor: "Highlight",
+    cursor: "pointer"
+  }
 }
 )

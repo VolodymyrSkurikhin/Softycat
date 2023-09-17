@@ -29,6 +29,21 @@ export interface IUser {
   avatarURL: string,
   isShown: boolean
 }
+
+interface ICat {
+  _id: string,
+  name: string,
+  birthday: string,
+  breed: string,
+  imageURL: string,
+  forSale: boolean
+}
+
+interface IAllCatsSuccessResult {
+  success: true,
+  cats: ICat[]
+}
+
 interface IAllUsersSuccessResult {
   success: true;
   users: IUser[]
@@ -48,6 +63,10 @@ interface ILogoutErrorResult {
   success: false;
   errorReason: string;
   errorStatus: number;
+}
+interface IUpdateIsShownSuccessResult {
+  success: true,
+  newIsShown: boolean
 }
 
 // const res = await registerUser(...);
@@ -173,16 +192,25 @@ export async function logoutUser(): Promise<ILogoutSuccessResult | ILogoutErrorR
 // interface IShownErrorResult {
 //   errorReason: string
 // }
-export async function updateIsShown(): Promise<boolean> {
+export async function updateIsShown(): Promise<IUpdateIsShownSuccessResult | ILogoutErrorResult> {
   try {
-    const user = await axios.patch('auth/isshown');
-    return user.data.isShown;
+    const res = await axios.patch('auth/isshown');
+    return {
+      success: true,
+      newIsShown: res.data
+    }
   }
   catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error.response?.status);
       console.log(error.response?.data);
-      throw new Error(`${error.response?.data}`);
+      if (error.response?.status === 401) {
+        return {
+          success: false,
+          errorReason: error.response?.data.message,
+          errorStatus: 401
+        };
+      } throw new Error(`${error.response?.status}`);
       // return {
       //   success: false,
       //   errorReason: `${error.response?.data.message}`
@@ -220,4 +248,32 @@ export async function getAllUsers(): Promise<IAllUsersSuccessResult | IErrorResu
       throw new Error("Unexpected error occured");
     }
   }
+
+}
+
+export async function getAllCats(): Promise<IAllCatsSuccessResult | IErrorResult> {
+  try {
+    const res = await axios.get('auth/allcats');
+    return {
+      success: true,
+      cats: res.data
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.status);
+      console.log(error.response?.data);
+      alert(`${error.response?.data.message}`);
+      return {
+        success: false,
+        errorReason: `${error.response?.data.message}`
+      }
+
+      // throw new Error(`${error.response?.data.message}`);
+
+    } else {
+      // console.log(error);
+      throw new Error("Unexpected error occured");
+    }
+  }
+
 }

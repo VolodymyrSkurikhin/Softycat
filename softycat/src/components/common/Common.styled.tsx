@@ -25,9 +25,21 @@ export const Link = styled(NavLink)({
   textDecoration: "none",
   color: "black",
   fontWeight: "500",
-  '&.active': { backgroundColor: "orangered" }
+  '&.active': { backgroundColor: "orangered" },
+  ":hover": {
+    backgroundColor: "Highlight",
+    cursor: "pointer"
+  }
 }
 )
+
+export const LinkToFamily = styled(NavLink)({
+  transition: " opacity ",
+  ":hover": {
+    opacity: "0.8",
+    cursor: "pointer"
+  }
+})
 
 export const NavStart = styled('nav')({
   display: "flex",

@@ -41,6 +41,7 @@ export const UserProvider = ({ children }: any) => {
     setIsShown(userInfo.isShown);
     setToken(userInfo.token);
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    console.log(isShown);
   }, [name, email, avatarURL, isShown, token]);
   const logIn = (name: string, email: string, avatarURL: string, isShown: boolean, token: string) => {
     setUsername(name);

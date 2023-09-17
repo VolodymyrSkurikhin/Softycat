@@ -1,53 +1,46 @@
-// import { Container } from "../components/cards/Container.styled";
-// import { OwnerList, Container } from "../components/cards";
-// import list from "../Service/list.json";
 import React, { useState, useEffect } from 'react';
 import { Container, StyledList, StyledCard, StyledCardContainer, StyledTitle, StyledImgContainer, Image } from '../components/cards';
-import { getAllUsers, IUser } from '../Service/axiosFns';
 import { LinkToFamily } from '../components/common/Common.styled';
+import { getAllCats } from '../Service/axiosFns';
+
+interface ICat {
+  _id: string,
+  imageURL: string,
+  name: string,
+  birthday: string,
+  breed: string,
+  forSale: boolean
+}
 
 
-// interface IItem {
-//   id: string;
-//   url?: string;
-//   title: string;
-// }
-
-// interface IProps {
-//   owners: IItem[];
-// }
-
-// export const Home: React.FC = () => {
-//   return (<Container>
-//     <OwnerList owners={list} />
-//   </Container>)
-// }
-export const Home: React.FC = () => {
-  const [users, setUsers] = useState<IUser[]>([]);
+export const Family: React.FC = () => {
+  const [cats, setCats] = useState<ICat[]>([]);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     (async () => {
-      const result = await getAllUsers();
+      const result = await getAllCats();
       if (result.success) {
-        const visibleUsers = result.users.filter(user => user.isShown);
-        setUsers(visibleUsers)
+        setCats(result.cats)
       }
       else { setError(result.errorReason) }
     })()
   }, []);
   if (!error) {
-    if (users.length === 0) { return <h1>No users yet</h1> }
+    if (cats.length === 0) { return <h1>No cats yet</h1> }
     return (<Container>
       <StyledList>
-        {users.map(item => {
+        {cats.map(item => {
           return (
             <StyledCard key={item._id}>
               <LinkToFamily to={`${item._id}`}>
                 <StyledCardContainer>
                   <StyledImgContainer>
-                    <Image src={item.avatarURL} alt={item.name} width="100%" />
+                    <Image src={item.imageURL} alt={item.name} width="100%" />
                   </StyledImgContainer>
                   <StyledTitle>{item.name}</StyledTitle>
+                  <StyledTitle>{item.breed}</StyledTitle>
+                  <StyledTitle>{item.birthday}</StyledTitle>
+                  <StyledTitle>{item.forSale}</StyledTitle>
                 </StyledCardContainer>
               </LinkToFamily>
             </StyledCard>
