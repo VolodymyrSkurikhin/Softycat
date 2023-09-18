@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, StyledList, StyledCard, StyledCardContainer, StyledTitle, StyledImgContainer, Image } from '../components/cards';
 import { LinkToFamily } from '../components/common/Common.styled';
 import { getAllCats } from '../Service/axiosFns';
+import { useParams } from 'react-router-dom';
 
 interface ICat {
   _id: string,
@@ -16,15 +17,18 @@ interface ICat {
 export const Family: React.FC = () => {
   const [cats, setCats] = useState<ICat[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const { ownerId } = useParams();
   useEffect(() => {
     (async () => {
-      const result = await getAllCats();
-      if (result.success) {
-        setCats(result.cats)
+      if (ownerId) {
+        const result = await getAllCats(ownerId);
+        if (result.success) {
+          setCats(result.cats)
+        }
+        else { setError(result.errorReason) }
       }
-      else { setError(result.errorReason) }
     })()
-  }, []);
+  }, [ownerId]);
   if (!error) {
     if (cats.length === 0) { return <h1>No cats yet</h1> }
     return (<Container>

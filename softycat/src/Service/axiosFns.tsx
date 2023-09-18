@@ -251,9 +251,9 @@ export async function getAllUsers(): Promise<IAllUsersSuccessResult | IErrorResu
 
 }
 
-export async function getAllCats(): Promise<IAllCatsSuccessResult | IErrorResult> {
+export async function getAllCats(ownerId: string): Promise<IAllCatsSuccessResult | IErrorResult> {
   try {
-    const res = await axios.get('auth/allcats');
+    const res = await axios.get(`cats/allcats/${ownerId}`);
     return {
       success: true,
       cats: res.data
