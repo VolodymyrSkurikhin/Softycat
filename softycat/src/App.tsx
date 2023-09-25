@@ -12,6 +12,7 @@ import { Login } from "./pages/Login";
 import { Profile } from "./pages/Profile";
 import { useUser } from "./components/userContext";
 import { Family } from "./pages/Family";
+
 // import list from "./Service/list.json";
 
 const App: React.FC = () => {
@@ -36,7 +37,7 @@ const App: React.FC = () => {
     </Header>
     <Routes>
       <Route path="/home" element={<Home />} />
-      <Route path="/home/:familyId" element={<Family />} />
+      <Route path="/home/:ownerId" element={<Family />} />
       <Route path="/register" element={token ? <Home /> : <SignUp />} />
       <Route path="/login" element={token ? <Home /> : <Login />} />
       <Route path="/logout" element={token ? <Logout /> : <Home />} />
