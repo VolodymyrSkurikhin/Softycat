@@ -4,11 +4,13 @@ import { Container, StyledList, StyledCard, StyledCardContainer, StyledTitle, St
 import { LinkToFamily } from '../components/common/Common.styled';
 import { getAllCats } from '../Service/axiosFns';
 import { Modal } from '../components/Modal/Modal';
+import { useUser } from '../components/userContext';
+import { AddCatForm } from '../components/forms/AddCatForm';
 
 
 interface ICat {
   _id: string,
-  imageURL: string,
+  catImageURL: string,
   name: string,
   birthday: string,
   breed: string,
@@ -20,8 +22,11 @@ export const Family: React.FC = () => {
   const [cats, setCats] = useState<ICat[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [updating, setUpdating] = useState(0);
+  const { name, token } = useUser();
   const { ownerId } = useParams();
   const closeOpenModal = () => { setShowModal(prev => !prev) };
+  const update = () => { setUpdating(prev => { return (prev + 1) }) };
   useEffect(() => {
     (async () => {
       if (ownerId) {
@@ -32,14 +37,15 @@ export const Family: React.FC = () => {
         else { setError(result.errorReason) }
       }
     })()
-  }, [ownerId]);
+  }, [ownerId, updating]);
   if (!error) {
     if (cats.length === 0) {
-      return <><button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Open Modal</button>
+      return <>{token && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add cat to {name}'s family</button>}
         <h1>No cats yet</h1>
-        {showModal && <Modal onClose={closeOpenModal}>
+        {token && showModal && <Modal onClose={closeOpenModal}>
+          <AddCatForm updateFamily={update} />
           <h2>"This is modal"</h2>
-        </Modal>}
+        </Modal >}
       </>
     }
     return (<Container>
@@ -50,7 +56,7 @@ export const Family: React.FC = () => {
               <LinkToFamily to={`${item._id}`}>
                 <StyledCardContainer>
                   <StyledImgContainer>
-                    <Image src={item.imageURL} alt={item.name} width="100%" />
+                    <Image src={item.catImageURL} alt={item.name} width="100%" />
                   </StyledImgContainer>
                   <StyledTitle>{item.name}</StyledTitle>
                   <StyledTitle>{item.breed}</StyledTitle>
@@ -62,16 +68,11 @@ export const Family: React.FC = () => {
           );
         })}
       </StyledList>
-
-
       {showModal && <Modal onClose={closeOpenModal}>
         <h2>"This is modal"</h2>
       </Modal>}
-
     </Container>
-
     )
-
   }
   return (<h1>{error}</h1>)
 }

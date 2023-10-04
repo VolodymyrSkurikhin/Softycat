@@ -35,8 +35,30 @@ interface ICat {
   name: string,
   birthday: string,
   breed: string,
-  imageURL: string,
+  catImageURL: string,
   forSale: boolean
+}
+
+interface IAddCat {
+  name: string,
+  birthday: string,
+  breed: string,
+  photo: File,
+  forSale: boolean
+}
+
+interface IAddedCat {
+  _id: string,
+  name: string,
+  birthday: string,
+  breed: string,
+  catImageURL: string[],
+  forSale: boolean
+}
+
+interface IAddedCatSuccessResult {
+  success: true,
+  cat: IAddedCat
 }
 
 interface IAllCatsSuccessResult {
@@ -267,13 +289,35 @@ export async function getAllCats(ownerId: string): Promise<IAllCatsSuccessResult
         success: false,
         errorReason: `${error.response?.data.message}`
       }
-
-      // throw new Error(`${error.response?.data.message}`);
-
     } else {
-      // console.log(error);
       throw new Error("Unexpected error occured");
     }
   }
-
 }
+
+export async function addCat(data: IAddCat): Promise<IAddedCatSuccessResult | IErrorResult> {
+  try {
+    const res = await axios.postForm(`cats/`,
+      data
+    );
+    return {
+      success: true,
+      cat: res.data
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.status);
+      console.log(error.response?.data);
+      alert(`${error.response?.data.message}`);
+      return {
+        success: false,
+        errorReason: `${error.response?.data.message}`
+      }
+    } else {
+      throw new Error("Unexpected error occured");
+    }
+  }
+}
+
+
+
