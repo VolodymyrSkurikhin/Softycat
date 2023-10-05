@@ -68,8 +68,10 @@ export const Family: React.FC = () => {
           );
         })}
       </StyledList>
-      {showModal && <Modal onClose={closeOpenModal}>
+      {token && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add cat to {name}'s family</button>}
+      {token && showModal && <Modal onClose={closeOpenModal}>
         <h2>"This is modal"</h2>
+        <AddCatForm updateFamily={update} />
       </Modal>}
     </Container>
     )
