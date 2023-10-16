@@ -7,12 +7,12 @@ const modalRoot = document.getElementById('modalroot') as HTMLElement;
 
 
 export const Modal: React.FC<any> = (props: any) => {
-  const handleEscape = (e: any) => {
+  const handleEscape = (e: any): void => {
     if (e.code === "Escape") {
       props.onClose();
     }
   }
-  const handleBackdropClick = (e: any) => {
+  const handleBackdropClick = (e: any): void => {
     if (e.currentTarget === e.target) {
       props.onClose()
     }
@@ -24,7 +24,7 @@ export const Modal: React.FC<any> = (props: any) => {
   return (createPortal(<>
     <Backdrop onClick={handleBackdropClick}>
       <ModalContent>
-        <button type='button' onClick={props.onClose} style={{ float: "right" }}>Close modal</button>
+        <button type='button' onClick={props.onClose} style={{ float: "right" }}>Close</button>
         {props.children}
       </ModalContent>
     </Backdrop></>, modalRoot!)

@@ -319,5 +319,30 @@ export async function addCat(data: IAddCat): Promise<IAddedCatSuccessResult | IE
   }
 }
 
+export async function removeCat(id: string): Promise<any> {
+  try {
+    const response = await axios.delete(`cats/${id}`);
+    console.log(response);
+    return response
+  }
+  catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.status);
+      console.log(error.response?.data);
+      console.log(error);
+      // alert(`${error.response?.data.message}`);
+      return error;
+      // success: false,
+      // errorReason: `${error.response?.data.message}`
+
+    } else {
+      throw new Error("Unexpected error occured");
+    }
+  }
+}
+
+
+
+
 
 
