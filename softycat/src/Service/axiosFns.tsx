@@ -90,6 +90,14 @@ interface IUpdateIsShownSuccessResult {
   success: true,
   newIsShown: boolean
 }
+interface IRemoveCatSuccessResult {
+  success: true,
+  status: number
+}
+interface IRemoveCatErrorREsult {
+  success: false,
+  status: number | undefined
+}
 
 // const res = await registerUser(...);
 // if (res.success) {
@@ -319,11 +327,14 @@ export async function addCat(data: IAddCat): Promise<IAddedCatSuccessResult | IE
   }
 }
 
-export async function removeCat(id: string): Promise<any> {
+export async function removeCat(id: string): Promise<IRemoveCatSuccessResult | IRemoveCatErrorREsult> {
   try {
     const response = await axios.delete(`cats/${id}`);
     console.log(response);
-    return response
+    return {
+      success: true,
+      status: response.status
+    };
   }
   catch (error) {
     if (axios.isAxiosError(error)) {
@@ -331,7 +342,10 @@ export async function removeCat(id: string): Promise<any> {
       console.log(error.response?.data);
       console.log(error);
       // alert(`${error.response?.data.message}`);
-      return error;
+      return {
+        success: false,
+        status: error.response?.status
+      };
       // success: false,
       // errorReason: `${error.response?.data.message}`
 

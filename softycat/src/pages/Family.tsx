@@ -35,10 +35,16 @@ export const Family: React.FC = () => {
     const approve = confirm("You are removing cat from list. Are you sure?");
     if (approve) {
       const res = await removeCat(id);
-      if (res.response.status === 401) {
-        alert("You should login first!");
-        logOut();
-        navigate(`/home/${ownerId}`);
+      if (res.success === false) {
+        if (res.status === 401) {
+          alert("You should login first!");
+          logOut();
+          localStorage.removeItem("user");
+          update();
+          navigate(`/home/${ownerId}`);
+          return;
+        }
+        alert("Something wrong. Please,try later");
         return;
       }
       update();
