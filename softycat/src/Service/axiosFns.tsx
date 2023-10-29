@@ -74,6 +74,7 @@ interface IAllUsersSuccessResult {
 interface IErrorResult {
   success: false;
   errorReason: string;
+  errorStatus: number | undefined
 }
 
 interface ILogoutSuccessResult {
@@ -142,7 +143,8 @@ export async function registerUser(regData: IRegisterData): Promise<ISuccessResu
       alert(`${error.response?.data.message}`);
       return {
         success: false,
-        errorReason: `${error.response?.data.message}`
+        errorReason: `${error.response?.data.message}`,
+        errorStatus: error.response?.status
       }
 
       // throw new Error(`${error.response?.data.message}`);
@@ -174,7 +176,8 @@ export async function loginUser(loginData: ILoginData): Promise<ISuccessResult |
       console.log(error.response?.data);
       return {
         success: false,
-        errorReason: `${error.response?.data.message}`
+        errorReason: `${error.response?.data.message}`,
+        errorStatus: error.response?.status
       }
       // throw new Error(`${error.response?.status}`);
 
@@ -268,7 +271,8 @@ export async function getAllUsers(): Promise<IAllUsersSuccessResult | IErrorResu
       alert(`${error.response?.data.message}`);
       return {
         success: false,
-        errorReason: `${error.response?.data.message}`
+        errorReason: `${error.response?.data.message}`,
+        errorStatus: error.response?.status
       }
 
       // throw new Error(`${error.response?.data.message}`);
@@ -295,7 +299,8 @@ export async function getAllCats(ownerId: string): Promise<IAllCatsSuccessResult
       alert(`${error.response?.data.message}`);
       return {
         success: false,
-        errorReason: `${error.response?.data.message}`
+        errorReason: `${error.response?.data.message}`,
+        errorStatus: error.response?.status
       }
     } else {
       throw new Error("Unexpected error occured");
@@ -319,7 +324,8 @@ export async function addCat(data: IAddCat): Promise<IAddedCatSuccessResult | IE
       alert(`${error.response?.data.message}`);
       return {
         success: false,
-        errorReason: `${error.response?.data.message}`
+        errorReason: `${error.response?.data.message}`,
+        errorStatus: error.response?.status
       }
     } else {
       throw new Error("Unexpected error occured");

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Container, StyledList, StyledCard, StyledCardContainer, StyledTitle, StyledImgContainer, Image } from '../components/cards';
 import { LinkToFamily } from '../components/common/Common.styled';
 import { getAllCats, removeCat } from '../Service/axiosFns';
@@ -26,31 +26,34 @@ export const Family: React.FC = () => {
   const [updating, setUpdating] = useState(0);
   const { name, token } = useUser();
   const { ownerId } = useParams();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { logOut } = useUser();
   const closeOpenModal = () => { setShowModal(prev => !prev) };
   const update = () => { setUpdating(prev => { return (prev + 1) }) };
   const onRemove = async (id: string) => {
     // eslint-disable-next-line no-restricted-globals
     const approve = confirm("You are removing cat from list. Are you sure?");
-    if (approve) {
-      const res = await removeCat(id);
-      if (res.success === false) {
-        if (res.status === 401) {
-          alert("You should login first!");
-          logOut();
-          localStorage.removeItem("user");
-          update();
-          navigate(`/home/${ownerId}`);
-          return;
-        }
-        alert("Something wrong. Please,try later");
+    if (!approve) {
+      return;
+    };
+    const res = await removeCat(id);
+    if (res.success === false) {
+      if (res.status === 401) {
+        alert("You should login first!");
+        logOut();
+        localStorage.removeItem("user");
+        update();
+        // navigate(`/home/${ownerId}`);
         return;
       }
-      update();
-      navigate(`/home/${ownerId}`)
+      alert("Something wrong. Please,try later");
+      return;
     }
-    return;
+    update();
+    // navigate(`/home/${ownerId}`)
+    // }
+    // navigate(`/home/${ownerId}`);
+    // return;
   };
   useEffect(() => {
     (async () => {
@@ -86,9 +89,10 @@ export const Family: React.FC = () => {
                   <StyledTitle>{item.breed}</StyledTitle>
                   <StyledTitle>{item.birthday}</StyledTitle>
                   <StyledTitle>{item.forSale}</StyledTitle>
-                  {token && <button type="button" onClick={() => onRemove(item._id)} style={{ float: "right" }}>Remove</button>}
+                  {/* {token && <button type="button" onClick={() => onRemove(item._id)} style={{ float: "right" }}>Remove</button>} */}
                 </StyledCardContainer>
               </LinkToFamily>
+              {token && <button type="button" onClick={() => onRemove(item._id)} style={{ float: "right" }}>Remove</button>}
             </StyledCard>
           );
         })}

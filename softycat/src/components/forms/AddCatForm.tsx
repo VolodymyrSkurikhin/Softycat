@@ -1,6 +1,8 @@
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { SignupFormStyled, InputStyled } from "../forms";
 import { addCat } from "../../Service/axiosFns";
+import { useUser } from "../userContext";
 // import { useParams } from "react-router-dom";
 
 type Inputs = {
@@ -13,6 +15,8 @@ type Inputs = {
 
 
 export const AddCatForm = ({ updateFamily }: any) => {
+  const navigate = useNavigate();
+  const { logOut } = useUser();
   const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<Inputs>();
   // const { ownerId } = useParams();
   // const form = document.getElementById("addCatForm") as HTMLFormElement;
@@ -36,8 +40,14 @@ export const AddCatForm = ({ updateFamily }: any) => {
       reset();
       return
     } else {
-      alert(`${res.errorReason}`);
+      // alert(`${res.errorReason}`);
       reset();
+      if (res.errorStatus === 401) {
+        alert("Please, login again");
+        logOut();
+        localStorage.removeItem("user");
+        navigate("/login");
+      }
       // }
     }
   };
