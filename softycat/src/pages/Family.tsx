@@ -24,7 +24,7 @@ export const Family: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [updating, setUpdating] = useState(0);
-  const { name, token } = useUser();
+  const { name, token, _id } = useUser();
   const { ownerId } = useParams();
   // const navigate = useNavigate();
   const { logOut } = useUser();
@@ -41,7 +41,7 @@ export const Family: React.FC = () => {
       if (res.status === 401) {
         alert("You should login first!");
         logOut();
-        localStorage.removeItem("user");
+        // localStorage.removeItem("user");
         update();
         // navigate(`/home/${ownerId}`);
         return;
@@ -68,9 +68,9 @@ export const Family: React.FC = () => {
   }, [ownerId, updating]);
   if (!error) {
     if (cats.length === 0) {
-      return <>{token && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add cat to {name}'s family</button>}
+      return <>{token && _id === ownerId && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add cat to {name}'s family</button>}
         <h1>No cats yet</h1>
-        {token && showModal && <Modal onClose={closeOpenModal}>
+        {token && showModal && _id === ownerId && <Modal onClose={closeOpenModal}>
           <AddCatForm updateFamily={update} />
         </Modal >}
       </>
@@ -97,8 +97,8 @@ export const Family: React.FC = () => {
           );
         })}
       </StyledList>
-      {token && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add cat to {name}'s family</button>}
-      {token && showModal && <Modal onClose={closeOpenModal}>
+      {token && _id === ownerId && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add cat to {name}'s family</button>}
+      {token && showModal && _id === ownerId && <Modal onClose={closeOpenModal}>
         <AddCatForm updateFamily={update} />
       </Modal>}
     </Container>

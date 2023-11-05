@@ -4,12 +4,13 @@ import { loadUser } from "../Service/LocalStorageFns";
 
 interface IUserContext {
   // isLoggedIn: boolean,
+  _id: string,
   name: string,
   email: string,
   avatarURL: string,
   isShown: boolean,
   token: string,
-  logIn(name: string, email: string, avatarURL: string, isShown: boolean, token: string): void,
+  logIn(_id: string, name: string, email: string, avatarURL: string, isShown: boolean, token: string): void,
   showHide(newIsShown: boolean): void,
   logOut(): void
 }
@@ -32,9 +33,11 @@ export const UserProvider = ({ children }: any) => {
   const [email, setEmail] = useState("");
   const [avatarURL, setAvatarURL] = useState("");
   const [token, setToken] = useState("");
+  const [_id, set_id] = useState("");
   useEffect(() => {
     const userInfo = loadUser('user');
     if (!userInfo) { return };
+    set_id(userInfo._id);
     setUsername(userInfo.name);
     setEmail(userInfo.email);
     setAvatarURL(userInfo.avatarURL);
@@ -42,8 +45,9 @@ export const UserProvider = ({ children }: any) => {
     setToken(userInfo.token);
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     console.log(isShown);
-  }, [name, email, avatarURL, isShown, token]);
-  const logIn = (name: string, email: string, avatarURL: string, isShown: boolean, token: string) => {
+  }, [_id, name, email, avatarURL, isShown, token]);
+  const logIn = (_id: string, name: string, email: string, avatarURL: string, isShown: boolean, token: string) => {
+    set_id(_id);
     setUsername(name);
     setEmail(email);
     setAvatarURL(avatarURL);
@@ -57,10 +61,11 @@ export const UserProvider = ({ children }: any) => {
     // setIsLoggedIn(false);
     setToken('');
     setUsername("");
+    localStorage.removeItem("user");
   };
 
   return (
-    <UserContext.Provider value={{ name, email, avatarURL, isShown, token, logIn, showHide, logOut }}>
+    <UserContext.Provider value={{ _id, name, email, avatarURL, isShown, token, logIn, showHide, logOut }}>
       {children}
     </UserContext.Provider>
   );

@@ -16,6 +16,7 @@ interface ILoginData {
 
 interface ISuccessResult {
   success: true;
+  _id: string,
   name: string;
   email: string,
   avatarURL: string,
@@ -125,6 +126,7 @@ export async function registerUser(regData: IRegisterData): Promise<ISuccessResu
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + loginResponse.data.token;
       return {
         success: true,
+        _id: loginResponse.data._id,
         name: loginResponse.data.name,
         email: loginResponse.data.email,
         avatarURL: loginResponse.data.avatarURL,
@@ -163,6 +165,7 @@ export async function loginUser(loginData: ILoginData): Promise<ISuccessResult |
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + loginResponse.data.token;
     return {
       success: true,
+      _id: loginResponse.data._id,
       name: loginResponse.data.name,
       email: loginResponse.data.email,
       avatarURL: loginResponse.data.avatarURL,
