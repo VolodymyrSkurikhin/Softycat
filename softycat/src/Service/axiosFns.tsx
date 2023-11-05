@@ -39,6 +39,12 @@ interface ICat {
   catImageURL: string,
   forSale: boolean
 }
+interface IImage {
+  _id: string,
+  cat: string,
+  owner: string,
+  catDetailedImageURL: string
+}
 
 interface IAddCat {
   name: string,
@@ -65,6 +71,11 @@ interface IAddedCatSuccessResult {
 interface IAllCatsSuccessResult {
   success: true,
   cats: ICat[]
+}
+
+interface IAllImagesSuccessResult {
+  success: true,
+  cats: IImage[]
 }
 
 interface IAllUsersSuccessResult {
@@ -358,6 +369,29 @@ export async function removeCat(id: string): Promise<IRemoveCatSuccessResult | I
       // success: false,
       // errorReason: `${error.response?.data.message}`
 
+    } else {
+      throw new Error("Unexpected error occured");
+    }
+  }
+}
+
+export async function getAllImages(catId: string): Promise<IAllImagesSuccessResult | IErrorResult> {
+  try {
+    const res = await axios.get(`image/${catId}`);
+    return {
+      success: true,
+      cats: res.data
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.status);
+      console.log(error.response?.data);
+      alert(`${error.response?.data.message}`);
+      return {
+        success: false,
+        errorReason: `${error.response?.data.message}`,
+        errorStatus: error.response?.status
+      }
     } else {
       throw new Error("Unexpected error occured");
     }
