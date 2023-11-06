@@ -41,7 +41,7 @@ interface ICat {
 }
 interface IImage {
   _id: string,
-  cat: string,
+  cat: { _id: string, name: string },
   owner: string,
   catDetailedImageURL: string
 }
@@ -75,7 +75,7 @@ interface IAllCatsSuccessResult {
 
 interface IAllImagesSuccessResult {
   success: true,
-  cats: IImage[]
+  images: IImage[]
 }
 
 interface IAllUsersSuccessResult {
@@ -380,7 +380,7 @@ export async function getAllImages(catId: string): Promise<IAllImagesSuccessResu
     const res = await axios.get(`image/${catId}`);
     return {
       success: true,
-      cats: res.data
+      images: res.data
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
