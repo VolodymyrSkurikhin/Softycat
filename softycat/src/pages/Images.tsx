@@ -4,6 +4,7 @@ import { getAllImages } from '../Service/axiosFns';
 import { useUser } from '../components/userContext';
 import { Container, StyledList, StyledCard, StyledCardContainer, StyledTitle, StyledImgContainer, Image } from '../components/cards';
 import { Modal } from '../components/Modal/Modal';
+import { AddImageForm } from '../components/forms/AddImage';
 
 interface IImage {
   _id: string,
@@ -62,7 +63,7 @@ export const Images: React.FC = () => {
       return <>{token && _id === ownerId && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add image to {images[0].cat.name}'s family</button>}
         <h1>No images yet</h1>
         {token && showModal && _id === ownerId && <Modal onClose={closeOpenModal}>
-          <AddCatForm updateFamily={update} />
+          <AddImageForm updateFamily={update} />
         </Modal >}
       </>
     }
@@ -76,7 +77,7 @@ export const Images: React.FC = () => {
             <StyledCard key={item._id}>
               <StyledCardContainer>
                 <StyledImgContainer>
-                  <Image src={item.catImageURL} alt={item.name} width="100%" />
+                  <Image src={item.catDetailedImageURL} alt={item.cat.name} width="100%" />
                 </StyledImgContainer>
               </StyledCardContainer>
               {token && <button type="button" onClick={() => onRemove(item._id)} style={{ float: "right" }}>Remove</button>}
@@ -86,7 +87,7 @@ export const Images: React.FC = () => {
       </StyledList>
       {token && _id === ownerId && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add cat to {name}'s family</button>}
       {token && showModal && _id === ownerId && <Modal onClose={closeOpenModal}>
-        <AddCatForm updateFamily={update} />
+        <AddImageForm updateImage={update} catID={catId} />
       </Modal>}
     </Container>
     )

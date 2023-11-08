@@ -45,7 +45,7 @@ export const AddCatForm = ({ updateFamily }: any) => {
       if (res.errorStatus === 401) {
         alert("Please, login again");
         logOut();
-        localStorage.removeItem("user");
+        // localStorage.removeItem("user");
         navigate("/login");
       }
       // }

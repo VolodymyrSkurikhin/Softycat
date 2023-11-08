@@ -54,18 +54,27 @@ interface IAddCat {
   forSale: boolean
 }
 
+interface IAddImage {
+  photo: File
+}
+
 interface IAddedCat {
   _id: string,
   name: string,
   birthday: string,
   breed: string,
-  catImageURL: string[],
+  catImageURL: string,
   forSale: boolean
 }
 
 interface IAddedCatSuccessResult {
   success: true,
   cat: IAddedCat
+}
+
+interface IAddedImageSuccessResult {
+  success: true,
+  image: IImage
 }
 
 interface IAllCatsSuccessResult {
@@ -381,6 +390,31 @@ export async function getAllImages(catId: string): Promise<IAllImagesSuccessResu
     return {
       success: true,
       images: res.data
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.status);
+      console.log(error.response?.data);
+      alert(`${error.response?.data.message}`);
+      return {
+        success: false,
+        errorReason: `${error.response?.data.message}`,
+        errorStatus: error.response?.status
+      }
+    } else {
+      throw new Error("Unexpected error occured");
+    }
+  }
+}
+
+export async function addImage(data: IAddImage, catId: string): Promise<IAddedImageSuccessResult | IErrorResult> {
+  try {
+    const res = await axios.postForm(`image/${catId}`,
+      data
+    );
+    return {
+      success: true,
+      image: res.data
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
