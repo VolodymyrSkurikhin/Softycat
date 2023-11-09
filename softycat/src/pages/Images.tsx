@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getAllImages } from '../Service/axiosFns';
+import { getAllImages, removeCat } from '../Service/axiosFns';
 import { useUser } from '../components/userContext';
 import { Container, StyledList, StyledCard, StyledCardContainer, StyledTitle, StyledImgContainer, Image } from '../components/cards';
 import { Modal } from '../components/Modal/Modal';
@@ -18,7 +18,18 @@ export const Images: React.FC = () => {
   const { ownerId, catId } = useParams();
   const [showModal, setShowModal] = useState(false);
   const [updating, setUpdating] = useState(0);
-  const { name, token, _id, logOut } = useUser();
+  const { token, _id, logOut } = useUser();
+  useEffect(() => {
+    (async () => {
+      if (ownerId && catId) {
+        const result = await getAllImages(catId);
+        if (result.success) {
+          setImages(result.images)
+        }
+        else { setError(result.errorReason) }
+      }
+    })()
+  }, [ownerId, catId, images, updating])
   const closeOpenModal = () => { setShowModal(prev => !prev) };
   const update = () => { setUpdating(prev => { return (prev + 1) }) };
   const onRemove = async (id: string) => {
@@ -27,7 +38,7 @@ export const Images: React.FC = () => {
     if (!approve) {
       return;
     };
-    const res = await removeCat(id);
+    const res = await removeCat(id, "image");
     if (res.success === false) {
       if (res.status === 401) {
         alert("You should login first!");
@@ -47,23 +58,13 @@ export const Images: React.FC = () => {
     // return;
   };
 
-  useEffect(() => {
-    (async () => {
-      if (ownerId && catId) {
-        const result = await getAllImages(catId);
-        if (result.success) {
-          setImages(result.images)
-        }
-        else { setError(result.errorReason) }
-      }
-    })()
-  }, [ownerId, catId, images, updating])
+
   if (!error) {
     if (images.length === 0) {
-      return <>{token && _id === ownerId && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add image to {images[0].cat.name}'s family</button>}
+      return <>{token && _id === ownerId && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add image of {images[0].cat.name}</button>}
         <h1>No images yet</h1>
         {token && showModal && _id === ownerId && <Modal onClose={closeOpenModal}>
-          <AddImageForm updateFamily={update} />
+          <AddImageForm updateImages={update} />
         </Modal >}
       </>
     }
@@ -80,12 +81,12 @@ export const Images: React.FC = () => {
                   <Image src={item.catDetailedImageURL} alt={item.cat.name} width="100%" />
                 </StyledImgContainer>
               </StyledCardContainer>
-              {token && <button type="button" onClick={() => onRemove(item._id)} style={{ float: "right" }}>Remove</button>}
+              {token && _id === ownerId && <button type="button" onClick={() => onRemove(item._id)} style={{ float: "right" }}>Remove</button>}
             </StyledCard>
           );
         })}
       </StyledList>
-      {token && _id === ownerId && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add cat to {name}'s family</button>}
+      {token && _id === ownerId && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add image of {images[0].cat.name}</button>}
       {token && showModal && _id === ownerId && <Modal onClose={closeOpenModal}>
         <AddImageForm updateImage={update} catID={catId} />
       </Modal>}

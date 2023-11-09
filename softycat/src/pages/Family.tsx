@@ -35,7 +35,7 @@ export const Family: React.FC = () => {
     if (!approve) {
       return;
     };
-    const res = await removeCat(id);
+    const res = await removeCat(id, "cat");
     if (res.success === false) {
       if (res.status === 401) {
         alert("You should login first!");
@@ -91,7 +91,7 @@ export const Family: React.FC = () => {
                   {/* {token && <button type="button" onClick={() => onRemove(item._id)} style={{ float: "right" }}>Remove</button>} */}
                 </StyledCardContainer>
               </LinkToFamily>
-              {token && <button type="button" onClick={() => onRemove(item._id)} style={{ float: "right" }}>Remove</button>}
+              {token && _id === ownerId && <button type="button" onClick={() => onRemove(item._id)} style={{ float: "right" }}>Remove</button>}
             </StyledCard>
           );
         })}

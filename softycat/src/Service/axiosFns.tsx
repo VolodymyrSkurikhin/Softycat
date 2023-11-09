@@ -356,9 +356,9 @@ export async function addCat(data: IAddCat): Promise<IAddedCatSuccessResult | IE
   }
 }
 
-export async function removeCat(id: string): Promise<IRemoveCatSuccessResult | IRemoveCatErrorREsult> {
+export async function removeCat(id: string, point: string): Promise<IRemoveCatSuccessResult | IRemoveCatErrorREsult> {
   try {
-    const response = await axios.delete(`cats/${id}`);
+    const response = await axios.delete(`${point}/${id}`);
     console.log(response);
     return {
       success: true,
