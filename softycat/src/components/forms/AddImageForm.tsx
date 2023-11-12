@@ -1,6 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { SignupFormStyled, InputStyled } from "../forms";
+import { SignupFormStyled, InputStyled } from ".";
 import { addImage } from "../../Service/axiosFns";
 import { useUser } from "../userContext";
 
@@ -9,7 +9,8 @@ type Inputs = {
 };
 
 
-export const AddImageForm = ({ updateImages }: any, catId: string) => {
+export const AddImageForm = ({ updateImages, catId }: { updateImages: any, catId: string }) => {
+  console.log("addImageForm", updateImages);
   const navigate = useNavigate();
   const { logOut } = useUser();
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>();

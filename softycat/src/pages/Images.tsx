@@ -4,7 +4,7 @@ import { getAllImages, removeCat } from '../Service/axiosFns';
 import { useUser } from '../components/userContext';
 import { Container, StyledList, StyledCard, StyledCardContainer, StyledTitle, StyledImgContainer, Image } from '../components/cards';
 import { Modal } from '../components/Modal/Modal';
-import { AddImageForm } from '../components/forms/AddImage';
+import { AddImageForm } from '../components/forms/AddImageForm';
 
 interface IImage {
   _id: string,
@@ -15,10 +15,11 @@ interface IImage {
 export const Images: React.FC = () => {
   const [images, setImages] = useState<IImage[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const { ownerId, catId } = useParams();
+  const { ownerId, catId } = useParams() as { ownerId: string, catId: string };
   const [showModal, setShowModal] = useState(false);
   const [updating, setUpdating] = useState(0);
   const { token, _id, logOut } = useUser();
+  console.log("Images", catId);
   useEffect(() => {
     (async () => {
       if (ownerId && catId) {
@@ -29,7 +30,7 @@ export const Images: React.FC = () => {
         else { setError(result.errorReason) }
       }
     })()
-  }, [ownerId, catId, images, updating])
+  }, [ownerId, catId, updating])
   const closeOpenModal = () => { setShowModal(prev => !prev) };
   const update = () => { setUpdating(prev => { return (prev + 1) }) };
   const onRemove = async (id: string) => {
@@ -61,10 +62,10 @@ export const Images: React.FC = () => {
 
   if (!error) {
     if (images.length === 0) {
-      return <>{token && _id === ownerId && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add image of {images[0].cat.name}</button>}
+      return <>{token && _id === ownerId && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add image</button>}
         <h1>No images yet</h1>
         {token && showModal && _id === ownerId && <Modal onClose={closeOpenModal}>
-          <AddImageForm updateImages={update} />
+          <AddImageForm updateImages={update} catId={catId} />
         </Modal >}
       </>
     }
@@ -88,7 +89,7 @@ export const Images: React.FC = () => {
       </StyledList>
       {token && _id === ownerId && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add image of {images[0].cat.name}</button>}
       {token && showModal && _id === ownerId && <Modal onClose={closeOpenModal}>
-        <AddImageForm updateImage={update} catID={catId} />
+        <AddImageForm updateImages={update} catId={catId} />
       </Modal>}
     </Container>
     )

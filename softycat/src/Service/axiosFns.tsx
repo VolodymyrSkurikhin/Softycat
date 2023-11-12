@@ -409,9 +409,11 @@ export async function getAllImages(catId: string): Promise<IAllImagesSuccessResu
 
 export async function addImage(data: IAddImage, catId: string): Promise<IAddedImageSuccessResult | IErrorResult> {
   try {
+    console.log(catId);
     const res = await axios.postForm(`image/${catId}`,
       data
     );
+
     return {
       success: true,
       image: res.data
