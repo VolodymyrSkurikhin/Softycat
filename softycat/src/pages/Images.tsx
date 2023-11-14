@@ -39,7 +39,7 @@ export const Images: React.FC = () => {
     if (!approve) {
       return;
     };
-    const res = await removeCat(id, "image");
+    const res = await removeCat("image", id);
     if (res.success === false) {
       if (res.status === 401) {
         alert("You should login first!");
@@ -52,7 +52,7 @@ export const Images: React.FC = () => {
       alert("Something wrong. Please,try later");
       return;
     }
-    // update();
+    update();
     // navigate(`/home/${ownerId}`)
     // }
     // navigate(`/home/${ownerId}`);
