@@ -35,6 +35,7 @@ export const Link = styled(NavLink)({
 
 export const LinkToFamily = styled(NavLink)({
   transition: " opacity ",
+  textDecoration: "none",
   ":hover": {
     opacity: "0.8",
     cursor: "pointer"

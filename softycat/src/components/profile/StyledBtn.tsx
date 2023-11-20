@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 export const StyledBtn = styled("button")({
   padding: "7px",
-  flex: "2 1 ",
+  flex: "0 3 auto",
   // flexBasis: "calc((100% - 20px) / 3 - 24px)",
   borderRadius: "23%",
   backgroundColor: "#5b8cde",

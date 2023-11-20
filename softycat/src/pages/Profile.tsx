@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom"
 import { updateIsShown } from "../Service/axiosFns"
-import { StyledBtn } from "../components/profile/StyledBtn"
-import { StyledContainer } from "../components/profile/StyledContainer"
-import { StyledItem } from "../components/profile/StyledItem"
-import { StyledItemValue } from "../components/profile/StyledItemValue"
-import { StyledLine } from "../components/profile/StyledLine"
-import { StyledShowYourselfBtn } from "../components/profile/StyledShowYourselfBtn"
+import { StyledBtn, StyledContainer, StyledItem, StyledItemValue, StyledLine, StyledShowYourselfBtn, Image } from "../components/profile";
+// import { StyledBtn } from "../components/profile/StyledBtn"
+// import { StyledContainer } from "../components/profile/StyledContainer"
+// import { StyledItem } from "../components/profile/StyledItem"
+// import { StyledItemValue } from "../components/profile/StyledItemValue"
+// import { StyledLine } from "../components/profile/StyledLine"
+// import { StyledShowYourselfBtn } from "../components/profile/StyledShowYourselfBtn"
 import { useUser } from "../components/userContext"
 import { loadUser, saveUser } from "../Service/LocalStorageFns"
 
@@ -53,9 +54,9 @@ export const Profile: React.FC = () => {
       <StyledBtn type="button">Change</StyledBtn>
     </StyledLine>
     <StyledLine>
-      <StyledItem>Avatar</StyledItem>
-      <StyledItemValue>{avatarURL}</StyledItemValue>
-      <StyledBtn type="button">Change</StyledBtn>
+      {/* <StyledItem>Avatar</StyledItem> */}
+      <Image src={avatarURL} alt="avatar image" />
+      <StyledBtn type="button">Change avatar</StyledBtn>
     </StyledLine>
     <StyledLine>
       {isShown ? <StyledShowYourselfBtn onClick={changeBtn}>Hide your cats</StyledShowYourselfBtn> :

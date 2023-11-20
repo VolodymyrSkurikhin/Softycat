@@ -87,7 +87,7 @@ export const Family: React.FC = () => {
                   <StyledTitle>{item.name}</StyledTitle>
                   <StyledTitle>{item.breed}</StyledTitle>
                   <StyledTitle>{item.birthday}</StyledTitle>
-                  <StyledTitle>{item.forSale}</StyledTitle>
+                  <StyledTitle>{item.forSale ? "For sale" : "Not for sale"}</StyledTitle>
                   {/* {token && <button type="button" onClick={() => onRemove(item._id)} style={{ float: "right" }}>Remove</button>} */}
                 </StyledCardContainer>
               </LinkToFamily>
