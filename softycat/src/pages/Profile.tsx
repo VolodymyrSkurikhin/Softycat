@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { updateIsShown } from "../Service/axiosFns"
-import { StyledBtn, StyledContainer, StyledItem, StyledItemValue, StyledLine, StyledShowYourselfBtn, Image } from "../components/profile";
+import { StyledBtn, StyledContainer, StyledItem, StyledItemValue, StyledLine, StyledShowYourselfBtn, StyledImgContainer, Image } from "../components/profile";
 // import { StyledBtn } from "../components/profile/StyledBtn"
 // import { StyledContainer } from "../components/profile/StyledContainer"
 // import { StyledItem } from "../components/profile/StyledItem"
@@ -55,8 +55,10 @@ export const Profile: React.FC = () => {
     </StyledLine>
     <StyledLine>
       {/* <StyledItem>Avatar</StyledItem> */}
-      <Image src={avatarURL} alt="avatar image" />
-      <StyledBtn type="button">Change avatar</StyledBtn>
+      <StyledImgContainer>
+        <Image src={avatarURL} alt="avatar image" width="100%" />
+      </StyledImgContainer>
+      <StyledBtn type="button">Change</StyledBtn>
     </StyledLine>
     <StyledLine>
       {isShown ? <StyledShowYourselfBtn onClick={changeBtn}>Hide your cats</StyledShowYourselfBtn> :

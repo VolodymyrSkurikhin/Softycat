@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 export const StyledLine = styled("li")({
   display: "flex",
   justifyContent: "space-around",
+  alignItems: "center",
   padding: "5px",
   flex: "0 1 ",
   margin: "10px",

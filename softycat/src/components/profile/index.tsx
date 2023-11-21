@@ -5,3 +5,4 @@ export { StyledItemValue } from "./StyledItemValue";
 export { StyledLine } from "./StyledLine";
 export { StyledShowYourselfBtn } from "./StyledShowYourselfBtn";
 export { Image } from "./Image";
+export { StyledImgContainer } from "./StyledImgContainer";
