@@ -31,6 +31,11 @@ export interface IUser {
   isShown: boolean
 }
 
+interface ICurrentUser {
+  name: string,
+  email: string
+}
+
 interface ICat {
   _id: string,
   name: string,
@@ -77,6 +82,14 @@ interface IAddedImageSuccessResult {
   image: IImage
 }
 
+interface IAvatar {
+  avatarURL: string
+}
+interface IUpdateAvatarSuccessResult {
+  success: true,
+  avatarURL: IAvatar
+}
+
 interface IAllCatsSuccessResult {
   success: true,
   cats: ICat[]
@@ -90,6 +103,11 @@ interface IAllImagesSuccessResult {
 interface IAllUsersSuccessResult {
   success: true;
   users: IUser[]
+}
+
+interface ICurrentUserSuccessResult {
+  success: true,
+  user: ICurrentUser
 }
 
 interface IErrorResult {
@@ -307,6 +325,33 @@ export async function getAllUsers(): Promise<IAllUsersSuccessResult | IErrorResu
   }
 
 }
+export async function getCurrentUser(): Promise<ICurrentUserSuccessResult | IErrorResult> {
+  try {
+    const res = await axios.get('auth/current');
+    return {
+      success: true,
+      user: res.data
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.status);
+      console.log(error.response?.data);
+      alert(`${error.response?.data.message}`);
+      return {
+        success: false,
+        errorReason: `${error.response?.data.message}`,
+        errorStatus: error.response?.status
+      }
+
+      // throw new Error(`${error.response?.data.message}`);
+
+    } else {
+      // console.log(error);
+      throw new Error("Unexpected error occured");
+    }
+  }
+
+}
 
 export async function getAllCats(ownerId: string): Promise<IAllCatsSuccessResult | IErrorResult> {
   try {
@@ -417,6 +462,31 @@ export async function addImage(data: IAddImage, catId: string): Promise<IAddedIm
     return {
       success: true,
       image: res.data
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.status);
+      console.log(error.response?.data);
+      alert(`${error.response?.data.message}`);
+      return {
+        success: false,
+        errorReason: `${error.response?.data.message}`,
+        errorStatus: error.response?.status
+      }
+    } else {
+      throw new Error("Unexpected error occured");
+    }
+  }
+}
+export async function updateAvatar(data: IAddImage): Promise<IUpdateAvatarSuccessResult | IErrorResult> {
+  try {
+    const res = await axios.patchForm(`avatar`,
+      data
+    );
+
+    return {
+      success: true,
+      avatarURL: res.data
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {

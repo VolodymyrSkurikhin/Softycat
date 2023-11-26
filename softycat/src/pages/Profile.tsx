@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
-import { updateIsShown } from "../Service/axiosFns"
+import { useState } from 'react'
+import { updateIsShown, getCurrentUser } from "../Service/axiosFns"
 import { StyledBtn, StyledContainer, StyledItem, StyledItemValue, StyledLine, StyledShowYourselfBtn, StyledImgContainer, Image } from "../components/profile";
 // import { StyledBtn } from "../components/profile/StyledBtn"
 // import { StyledContainer } from "../components/profile/StyledContainer"
@@ -9,16 +10,36 @@ import { StyledBtn, StyledContainer, StyledItem, StyledItemValue, StyledLine, St
 // import { StyledShowYourselfBtn } from "../components/profile/StyledShowYourselfBtn"
 import { useUser } from "../components/userContext"
 import { loadUser, saveUser } from "../Service/LocalStorageFns"
+import { Container } from "../App.styled";
+import { Modal } from "../components/Modal/Modal";
 
 
 
 export const Profile: React.FC = () => {
   const { name, email, avatarURL, isShown, showHide, logOut } = useUser();
+  const [showModal, setShowModal] = useState(false);
   console.log(isShown);
   console.log(name);
   console.log(avatarURL);
   const navigate = useNavigate();
-  const changeBtn = async () => {
+  const closeOpenModal = () => { setShowModal(prev => !prev) };
+  const changeAvatar = async () => {
+    const result = await getCurrentUser();
+    if (result.success) {
+      if (result.user.name === name) { closeOpenModal() }
+      alert("Login again, please!");
+      logOut()
+    }
+    else {
+      if (result.errorStatus === 401)
+        alert("Please,login again!");
+      logOut();
+      navigate('/home');
+    }
+    alert("Something went wrong, try later, please!");
+    navigate('/home');
+  }
+  const changeIsShownBtn = async () => {
     const result = await updateIsShown();
     if (result.success) {
       console.log(result.newIsShown);
@@ -31,7 +52,6 @@ export const Profile: React.FC = () => {
       if (result.errorStatus === 401) {
         alert(`You are not logged in`);
         logOut();
-        localStorage.removeItem("user");
         navigate("/home");
         return;
       }
@@ -42,27 +62,32 @@ export const Profile: React.FC = () => {
     }
     // navigate("/home", { replace: true });
   };
-  return (<StyledContainer>
-    <StyledLine>
-      <StyledItem>Name</StyledItem>
-      <StyledItemValue>{name}</StyledItemValue>
-      <StyledBtn type="button">Change</StyledBtn>
-    </StyledLine>
-    <StyledLine>
-      <StyledItem>Email</StyledItem>
-      <StyledItemValue>{email}</StyledItemValue>
-      <StyledBtn type="button">Change</StyledBtn>
-    </StyledLine>
-    <StyledLine>
-      {/* <StyledItem>Avatar</StyledItem> */}
-      <StyledImgContainer>
-        <Image src={avatarURL} alt="avatar image" width="100%" />
-      </StyledImgContainer>
-      <StyledBtn type="button">Change</StyledBtn>
-    </StyledLine>
-    <StyledLine>
-      {isShown ? <StyledShowYourselfBtn onClick={changeBtn}>Hide your cats</StyledShowYourselfBtn> :
-        <StyledShowYourselfBtn onClick={changeBtn}>Show your cats</StyledShowYourselfBtn>}
-    </StyledLine>
-  </StyledContainer>)
+  return (<Container>
+    <StyledContainer>
+      <StyledLine>
+        <StyledItem>Name</StyledItem>
+        <StyledItemValue>{name}</StyledItemValue>
+        <StyledBtn type="button">Change</StyledBtn>
+      </StyledLine>
+      <StyledLine>
+        <StyledItem>Email</StyledItem>
+        <StyledItemValue>{email}</StyledItemValue>
+        <StyledBtn type="button">Change</StyledBtn>
+      </StyledLine>
+      <StyledLine>
+        {/* <StyledItem>Avatar</StyledItem> */}
+        <StyledImgContainer>
+          <Image src={avatarURL} alt="avatar image" width="100%" />
+        </StyledImgContainer>
+        <StyledBtn type="button" onClick={changeAvatar}>Change</StyledBtn>
+      </StyledLine>
+      <StyledLine>
+        {isShown ? <StyledShowYourselfBtn onClick={changeIsShownBtn}>Hide your cats</StyledShowYourselfBtn> :
+          <StyledShowYourselfBtn onClick={changeIsShownBtn}>Show your cats</StyledShowYourselfBtn>}
+      </StyledLine>
+    </StyledContainer>
+    {showModal && <Modal onClose={closeOpenModal}>
+      <AddImageForm updateImages={update} catId={catId} />
+    </Modal>}
+  </Container>)
 }
