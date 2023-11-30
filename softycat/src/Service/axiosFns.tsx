@@ -82,12 +82,12 @@ interface IAddedImageSuccessResult {
   image: IImage
 }
 
-interface IAvatar {
-  avatarURL: string
-}
+// interface IAvatar {
+//   avatarURL: string
+// }
 interface IUpdateAvatarSuccessResult {
   success: true,
-  avatarURL: IAvatar
+  avatarURL: string
 }
 
 interface IAllCatsSuccessResult {
@@ -480,7 +480,7 @@ export async function addImage(data: IAddImage, catId: string): Promise<IAddedIm
 }
 export async function updateAvatar(data: IAddImage): Promise<IUpdateAvatarSuccessResult | IErrorResult> {
   try {
-    const res = await axios.patchForm(`avatar`,
+    const res = await axios.patchForm('auth/avatar',
       data
     );
 

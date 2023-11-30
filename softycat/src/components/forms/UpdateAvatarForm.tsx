@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { SignupFormStyled, InputStyled } from ".";
 import { updateAvatar } from "../../Service/axiosFns";
 import { useUser } from "../userContext";
+import { loadUser, saveUser } from "../../Service/LocalStorageFns";
 
 type Inputs = {
   photo: File
 };
 
 
-export const UpdateAvatarForm = ({ updateImages }: { updateImages: any }) => {
+export const UpdateAvatarForm = ({ updateImages, closeForm }: { updateImages: any, closeForm: any }) => {
   console.log("addImageForm", updateImages);
   const navigate = useNavigate();
   const { logOut } = useUser();
@@ -26,8 +27,11 @@ export const UpdateAvatarForm = ({ updateImages }: { updateImages: any }) => {
     const res = await updateAvatar(formData);
     if (res.success) {
       // const { _id, name, birthday, breed, forSale, catImageURL } = res.cat;
-      updateImages();
       reset();
+      const userInfo = loadUser("user");
+      if (userInfo) { saveUser("user", { ...userInfo, avatarURL: res.avatarURL }) };
+      closeForm();
+      updateImages(res.avatarURL);
       return
     } else {
       // alert(`${res.errorReason}`);
@@ -43,7 +47,7 @@ export const UpdateAvatarForm = ({ updateImages }: { updateImages: any }) => {
   };
 
   return (/* "handleSubmit" will validate your inputs before invoking "onSubmit" */
-    <SignupFormStyled id="addCatForm" encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
+    <SignupFormStyled id="updateAvatarForm" encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
       <input id="file" type="file" placeholder="Choose image"{...register("photo", { required: true })} />
       {errors.photo && <span>This field is required</span>}
       <InputStyled type="submit" />

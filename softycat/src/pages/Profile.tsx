@@ -12,32 +12,45 @@ import { useUser } from "../components/userContext"
 import { loadUser, saveUser } from "../Service/LocalStorageFns"
 import { Container } from "../App.styled";
 import { Modal } from "../components/Modal/Modal";
+import { UpdateAvatarForm } from "../components/forms/UpdateAvatarForm";
 
 
 
 export const Profile: React.FC = () => {
   const { name, email, avatarURL, isShown, showHide, logOut } = useUser();
+  const [currentAvatar, setCurrentAvatar] = useState(avatarURL);
   const [showModal, setShowModal] = useState(false);
   console.log(isShown);
   console.log(name);
   console.log(avatarURL);
   const navigate = useNavigate();
+  const [updating, setUpdating] = useState(0);
+  console.log(updating);
+  const update = (newAvatar: string) => {
+    setUpdating(prev => { return (prev + 1) });
+    setCurrentAvatar(newAvatar);
+  };
   const closeOpenModal = () => { setShowModal(prev => !prev) };
   const changeAvatar = async () => {
     const result = await getCurrentUser();
     if (result.success) {
       if (result.user.name === name) { closeOpenModal() }
-      alert("Login again, please!");
-      logOut()
+      else {
+        alert("Login again, please!");
+        logOut();
+        return
+      }
     }
-    else {
-      if (result.errorStatus === 401)
+    if (!result.success) {
+      if (result.errorStatus === 401) {
         alert("Please,login again!");
-      logOut();
+        logOut();
+        navigate('/home');
+        return
+      }
+      alert("Something went wrong, try later, please!");
       navigate('/home');
     }
-    alert("Something went wrong, try later, please!");
-    navigate('/home');
   }
   const changeIsShownBtn = async () => {
     const result = await updateIsShown();
@@ -77,7 +90,7 @@ export const Profile: React.FC = () => {
       <StyledLine>
         {/* <StyledItem>Avatar</StyledItem> */}
         <StyledImgContainer>
-          <Image src={avatarURL} alt="avatar image" width="100%" />
+          <Image src={currentAvatar} alt="avatar image" width="100%" />
         </StyledImgContainer>
         <StyledBtn type="button" onClick={changeAvatar}>Change</StyledBtn>
       </StyledLine>
@@ -87,7 +100,7 @@ export const Profile: React.FC = () => {
       </StyledLine>
     </StyledContainer>
     {showModal && <Modal onClose={closeOpenModal}>
-      <AddImageForm updateImages={update} catId={catId} />
+      <UpdateAvatarForm updateImages={update} closeForm={closeOpenModal} />
     </Modal>}
   </Container>)
 }
