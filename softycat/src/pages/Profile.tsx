@@ -24,12 +24,12 @@ export const Profile: React.FC = () => {
   console.log(name);
   console.log(avatarURL);
   const navigate = useNavigate();
-  const [updating, setUpdating] = useState(0);
-  console.log(updating);
-  const update = (newAvatar: string) => {
-    setUpdating(prev => { return (prev + 1) });
-    setCurrentAvatar(newAvatar);
-  };
+  // const [updating, setUpdating] = useState(0);
+  // console.log(updating);
+  // const update = (newAvatar: string) => {
+  //   // setUpdating(prev => { return (prev + 1) });
+  //   setCurrentAvatar(newAvatar);
+  // };
   const closeOpenModal = () => { setShowModal(prev => !prev) };
   const changeAvatar = async () => {
     const result = await getCurrentUser();
@@ -100,7 +100,7 @@ export const Profile: React.FC = () => {
       </StyledLine>
     </StyledContainer>
     {showModal && <Modal onClose={closeOpenModal}>
-      <UpdateAvatarForm updateImages={update} closeForm={closeOpenModal} />
+      <UpdateAvatarForm updateImages={setCurrentAvatar} closeForm={closeOpenModal} />
     </Modal>}
   </Container>)
 }

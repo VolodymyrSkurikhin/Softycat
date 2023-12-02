@@ -63,6 +63,10 @@ interface IAddImage {
   photo: File
 }
 
+type Inputs = {
+  instance: string,
+};
+
 interface IAddedCat {
   _id: string,
   name: string,
@@ -88,6 +92,11 @@ interface IAddedImageSuccessResult {
 interface IUpdateAvatarSuccessResult {
   success: true,
   avatarURL: string
+}
+
+interface IUpdateNameOrEmailSuccessResult {
+  success: true,
+  instance: string
 }
 
 interface IAllCatsSuccessResult {
@@ -487,6 +496,32 @@ export async function updateAvatar(data: IAddImage): Promise<IUpdateAvatarSucces
     return {
       success: true,
       avatarURL: res.data
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.status);
+      console.log(error.response?.data);
+      alert(`${error.response?.data.message}`);
+      return {
+        success: false,
+        errorReason: `${error.response?.data.message}`,
+        errorStatus: error.response?.status
+      }
+    } else {
+      throw new Error("Unexpected error occured");
+    }
+  }
+}
+
+export async function updateNameOrEmail(data: Inputs, point: string): Promise<IUpdateNameOrEmailSuccessResult | IErrorResult> {
+  try {
+    const res = await axios.patchForm(`auth/${point}`,
+      data
+    );
+
+    return {
+      success: true,
+      instance: res.data
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
