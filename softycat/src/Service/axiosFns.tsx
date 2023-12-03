@@ -64,7 +64,8 @@ interface IAddImage {
 }
 
 type Inputs = {
-  instance: string,
+  name?: string,
+  email?: string
 };
 
 interface IAddedCat {
@@ -515,9 +516,11 @@ export async function updateAvatar(data: IAddImage): Promise<IUpdateAvatarSucces
 
 export async function updateNameOrEmail(data: Inputs, point: string): Promise<IUpdateNameOrEmailSuccessResult | IErrorResult> {
   try {
+    console.log(data);
     const res = await axios.patchForm(`auth/${point}`,
       data
     );
+    console.log(res.data);
 
     return {
       success: true,

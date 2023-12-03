@@ -13,13 +13,18 @@ import { loadUser, saveUser } from "../Service/LocalStorageFns"
 import { Container } from "../App.styled";
 import { Modal } from "../components/Modal/Modal";
 import { UpdateAvatarForm } from "../components/forms/UpdateAvatarForm";
+import { UpdateNameOrEmailForm } from "../components/forms/UpdateNameOrEmailForm";
 
 
 
 export const Profile: React.FC = () => {
   const { name, email, avatarURL, isShown, showHide, logOut } = useUser();
   const [currentAvatar, setCurrentAvatar] = useState(avatarURL);
-  const [showModal, setShowModal] = useState(false);
+  const [currentName, setCurrentName] = useState(name);
+  const [currentEmail, setCurrentEmail] = useState(email);
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
+  const [showNameModal, setShowNameModal] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
   console.log(isShown);
   console.log(name);
   console.log(avatarURL);
@@ -30,11 +35,13 @@ export const Profile: React.FC = () => {
   //   // setUpdating(prev => { return (prev + 1) });
   //   setCurrentAvatar(newAvatar);
   // };
-  const closeOpenModal = () => { setShowModal(prev => !prev) };
-  const changeAvatar = async () => {
+  const closeOpenAvatarModal = () => { setShowAvatarModal(prev => !prev) };
+  const closeOpenNameModal = () => { setShowNameModal(prev => !prev) };
+  const closeOpenEmailModal = () => { setShowEmailModal(prev => !prev) };
+  const change = async (openFunc: any) => {
     const result = await getCurrentUser();
     if (result.success) {
-      if (result.user.name === name) { closeOpenModal() }
+      if (result.user.email === email) { openFunc() }
       else {
         alert("Login again, please!");
         logOut();
@@ -79,28 +86,34 @@ export const Profile: React.FC = () => {
     <StyledContainer>
       <StyledLine>
         <StyledItem>Name</StyledItem>
-        <StyledItemValue>{name}</StyledItemValue>
-        <StyledBtn type="button">Change</StyledBtn>
+        <StyledItemValue>{currentName}</StyledItemValue>
+        <StyledBtn type="button" onClick={() => { change(closeOpenNameModal) }}>Change</StyledBtn>
       </StyledLine>
       <StyledLine>
         <StyledItem>Email</StyledItem>
-        <StyledItemValue>{email}</StyledItemValue>
-        <StyledBtn type="button">Change</StyledBtn>
+        <StyledItemValue>{currentEmail}</StyledItemValue>
+        <StyledBtn type="button" onClick={() => { change(closeOpenEmailModal) }}>Change</StyledBtn>
       </StyledLine>
       <StyledLine>
         {/* <StyledItem>Avatar</StyledItem> */}
         <StyledImgContainer>
           <Image src={currentAvatar} alt="avatar image" width="100%" />
         </StyledImgContainer>
-        <StyledBtn type="button" onClick={changeAvatar}>Change</StyledBtn>
+        <StyledBtn type="button" onClick={() => { change(closeOpenAvatarModal) }}>Change</StyledBtn>
       </StyledLine>
       <StyledLine>
         {isShown ? <StyledShowYourselfBtn onClick={changeIsShownBtn}>Hide your cats</StyledShowYourselfBtn> :
           <StyledShowYourselfBtn onClick={changeIsShownBtn}>Show your cats</StyledShowYourselfBtn>}
       </StyledLine>
     </StyledContainer>
-    {showModal && <Modal onClose={closeOpenModal}>
-      <UpdateAvatarForm updateImages={setCurrentAvatar} closeForm={closeOpenModal} />
+    {showNameModal && <Modal onClose={closeOpenNameModal}>
+      <UpdateNameOrEmailForm updateNameOrEmailFunc={setCurrentName} closeForm={closeOpenNameModal} point="name" />
+    </Modal>}
+    {showEmailModal && <Modal onClose={closeOpenEmailModal}>
+      <UpdateNameOrEmailForm updateNameOrEmailFunc={setCurrentEmail} closeForm={closeOpenEmailModal} point="email" />
+    </Modal>}
+    {showAvatarModal && <Modal onClose={closeOpenAvatarModal}>
+      <UpdateAvatarForm updateImages={setCurrentAvatar} closeForm={closeOpenAvatarModal} />
     </Modal>}
   </Container>)
 }
