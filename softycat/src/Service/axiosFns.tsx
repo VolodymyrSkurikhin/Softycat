@@ -516,8 +516,8 @@ export async function updateAvatar(data: IAddImage): Promise<IUpdateAvatarSucces
 
 export async function updateNameOrEmail(data: Inputs, point: string): Promise<IUpdateNameOrEmailSuccessResult | IErrorResult> {
   try {
-    console.log(data);
-    const res = await axios.patchForm(`auth/${point}`,
+    console.log("data from axiosF", data);
+    const res = await axios.patch(`auth/${point}`,
       data
     );
     console.log(res.data);

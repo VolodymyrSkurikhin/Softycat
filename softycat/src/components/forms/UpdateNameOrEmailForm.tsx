@@ -19,6 +19,7 @@ export function UpdateNameOrEmailForm({ updateNameOrEmailFunc, closeForm, point 
   const onSubmit: SubmitHandler<Inputs> = async formData => {
 
     const res = await updateNameOrEmail(formData, point);
+    console.log("formData from form", formData);
     if (res.success) {
       // const { _id, name, birthday, breed, forSale, catImageURL } = res.cat;
       reset();
@@ -45,7 +46,7 @@ export function UpdateNameOrEmailForm({ updateNameOrEmailFunc, closeForm, point 
     <FormContainer>
       <SignupFormStyled onSubmit={handleSubmit(onSubmit)}>
         {/* register your input into the hook by invoking the "register" function */}
-        <InputStyled placeholder={point} {...register(point === "name" ? "name" : "email")} />
+        <InputStyled placeholder={point} {...register(point === "name" ? "name" : "email", { required: true })} />
         {errors[point === "name" ? "name" : "email"] && <span>This field is required</span>}
         <InputStyled type="submit" />
       </SignupFormStyled>
