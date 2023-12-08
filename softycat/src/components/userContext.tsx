@@ -12,7 +12,8 @@ interface IUserContext {
   token: string,
   logIn(_id: string, name: string, email: string, avatarURL: string, isShown: boolean, token: string): void,
   showHide(newIsShown: boolean): void,
-  logOut(): void
+  logOut(): void,
+  setContext(contKey: string, contValue: string): void
 }
 
 
@@ -64,8 +65,23 @@ export const UserProvider = ({ children }: any) => {
     localStorage.removeItem("user");
   };
 
+  const setContext = (contKey: string, contValue: string) => {
+    if (contKey === "name") {
+      setUsername(contValue);
+      return
+    }
+    if (contKey === "email") {
+      setEmail(contValue);
+      return
+    }
+    if (contKey === "avatarURL") {
+      setAvatarURL(contValue);
+      return
+    }
+  }
+
   return (
-    <UserContext.Provider value={{ _id, name, email, avatarURL, isShown, token, logIn, showHide, logOut }}>
+    <UserContext.Provider value={{ _id, name, email, avatarURL, isShown, token, logIn, showHide, logOut, setContext }}>
       {children}
     </UserContext.Provider>
   );

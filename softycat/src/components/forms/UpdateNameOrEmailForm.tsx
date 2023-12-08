@@ -26,7 +26,7 @@ export function UpdateNameOrEmailForm({ updateNameOrEmailFunc, closeForm, point 
       const userInfo = loadUser("user");
       if (userInfo) { saveUser("user", { ...userInfo, [point]: res.instance }) };
       closeForm();
-      updateNameOrEmailFunc(res.instance);
+      updateNameOrEmailFunc(point, res.instance);
       return
     } else {
       // alert(`${res.errorReason}`);

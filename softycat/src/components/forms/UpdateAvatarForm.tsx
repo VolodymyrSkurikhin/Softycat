@@ -31,7 +31,7 @@ export const UpdateAvatarForm = ({ updateImages, closeForm }: { updateImages: an
       const userInfo = loadUser("user");
       if (userInfo) { saveUser("user", { ...userInfo, avatarURL: res.avatarURL }) };
       closeForm();
-      updateImages(res.avatarURL);
+      updateImages("avatarURL", res.avatarURL);
       return
     } else {
       // alert(`${res.errorReason}`);

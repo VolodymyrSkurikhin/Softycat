@@ -18,10 +18,10 @@ import { UpdateNameOrEmailForm } from "../components/forms/UpdateNameOrEmailForm
 
 
 export const Profile: React.FC = () => {
-  const { name, email, avatarURL, isShown, showHide, logOut } = useUser();
-  const [currentAvatar, setCurrentAvatar] = useState(avatarURL);
-  const [currentName, setCurrentName] = useState(name);
-  const [currentEmail, setCurrentEmail] = useState(email);
+  const { name, email, avatarURL, isShown, showHide, logOut, setContext } = useUser();
+  // const [currentAvatar, setCurrentAvatar] = useState(avatarURL);
+  // const [currentName, setCurrentName] = useState(name);
+  // const [currentEmail, setCurrentEmail] = useState(email);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   const [showNameModal, setShowNameModal] = useState(false);
   const [showEmailModal, setShowEmailModal] = useState(false);
@@ -86,18 +86,18 @@ export const Profile: React.FC = () => {
     <StyledContainer>
       <StyledLine>
         <StyledItem>Name</StyledItem>
-        <StyledItemValue>{currentName}</StyledItemValue>
+        <StyledItemValue>{name}</StyledItemValue>
         <StyledBtn type="button" onClick={() => { change(closeOpenNameModal) }}>Change</StyledBtn>
       </StyledLine>
       <StyledLine>
         <StyledItem>Email</StyledItem>
-        <StyledItemValue>{currentEmail}</StyledItemValue>
+        <StyledItemValue>{email}</StyledItemValue>
         <StyledBtn type="button" onClick={() => { change(closeOpenEmailModal) }}>Change</StyledBtn>
       </StyledLine>
       <StyledLine>
         {/* <StyledItem>Avatar</StyledItem> */}
         <StyledImgContainer>
-          <Image src={currentAvatar} alt="avatar image" width="100%" />
+          <Image src={avatarURL} alt="avatar image" width="100%" />
         </StyledImgContainer>
         <StyledBtn type="button" onClick={() => { change(closeOpenAvatarModal) }}>Change</StyledBtn>
       </StyledLine>
@@ -107,13 +107,13 @@ export const Profile: React.FC = () => {
       </StyledLine>
     </StyledContainer>
     {showNameModal && <Modal onClose={closeOpenNameModal}>
-      <UpdateNameOrEmailForm updateNameOrEmailFunc={setCurrentName} closeForm={closeOpenNameModal} point="name" />
+      <UpdateNameOrEmailForm updateNameOrEmailFunc={setContext} closeForm={closeOpenNameModal} point="name" />
     </Modal>}
     {showEmailModal && <Modal onClose={closeOpenEmailModal}>
-      <UpdateNameOrEmailForm updateNameOrEmailFunc={setCurrentEmail} closeForm={closeOpenEmailModal} point="email" />
+      <UpdateNameOrEmailForm updateNameOrEmailFunc={setContext} closeForm={closeOpenEmailModal} point="email" />
     </Modal>}
     {showAvatarModal && <Modal onClose={closeOpenAvatarModal}>
-      <UpdateAvatarForm updateImages={setCurrentAvatar} closeForm={closeOpenAvatarModal} />
+      <UpdateAvatarForm updateImages={setContext} closeForm={closeOpenAvatarModal} />
     </Modal>}
   </Container>)
 }
