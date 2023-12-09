@@ -5,7 +5,7 @@ export const StyledImgContainer = styled('div')({
   // width: "100",
   // height: "80%",
   // position: "relative",
-  flex: "2 0 100%",
+  // flex: "2 0 100%",
   borderRadius: "8px",
   // width: "100%",
   // height: "100%",

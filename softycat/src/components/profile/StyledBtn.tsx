@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 
 export const StyledBtn = styled("button")({
+  display: "flex",
   padding: "10px",
   flex: "0 3 auto",
   // flexBasis: "calc((100% - 20px) / 3 - 24px)",

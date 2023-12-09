@@ -97,7 +97,7 @@ export const Profile: React.FC = () => {
       <StyledLine>
         {/* <StyledItem>Avatar</StyledItem> */}
         <StyledImgContainer>
-          <Image src={avatarURL} alt="avatar image" width="100%" />
+          <Image src={avatarURL} alt="avatar image" />
         </StyledImgContainer>
         <StyledBtn type="button" onClick={() => { change(closeOpenAvatarModal) }}>Change</StyledBtn>
       </StyledLine>
