@@ -13,6 +13,7 @@ import { Profile } from "./pages/Profile";
 import { useUser } from "./components/userContext";
 import { Family } from "./pages/Family";
 import { Images } from "./pages/Images";
+import { About } from "./pages/About";
 
 // import list from "./Service/list.json";
 
@@ -24,6 +25,7 @@ const App: React.FC = () => {
         <Animal name="cheetah" size="75px" dance rounded />
       </Logo> */}
       <NavStart>
+        <Link to="/">Up</Link>
         <Link to="/about">About
         </Link>
         <Link to="/home">Cats</Link>
@@ -37,6 +39,8 @@ const App: React.FC = () => {
       </NavEnd>
     </Header>
     <Routes>
+      <Route path="/" />
+      <Route path="/about" element={<About />} />
       <Route path="/home" element={<Home />} />
       <Route path="/home/:ownerId" element={<Family />} />
       <Route path="/home/:ownerId/:catId" element={<Images />} />
