@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { SignUp } from "./pages/Signup";
 // import { Container } from "./App.styled";
-import { CommonContainer, Header, NavStart, NavEnd, Link } from "./components/common/Common.styled";
+import { CommonContainer, Header, NavStart, NavEnd, Link, UpLink } from "./components/common/Common.styled";
 // import { RegBtnContainer } from "./components/RegBtns/RegBtnContainer.styled";
 // import { RegBtn } from "./components/RegBtns/RegBtn.styled";
 import { RegBtnContainer } from "./components/RegBtns/RegBtnContainer";
@@ -25,7 +25,7 @@ const App: React.FC = () => {
         <Animal name="cheetah" size="75px" dance rounded />
       </Logo> */}
       <NavStart>
-        <Link to="/">Up</Link>
+        <UpLink to="/">Up</UpLink>
         <Link to="/about">About
         </Link>
         <Link to="/home">Cats</Link>

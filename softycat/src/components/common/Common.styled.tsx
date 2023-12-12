@@ -33,6 +33,20 @@ export const Link = styled(NavLink)({
 }
 )
 
+export const UpLink = styled(NavLink)({
+  padding: "8px 16px",
+  borderRadius: "4px",
+  textDecoration: "none",
+  color: "black",
+  fontWeight: "500",
+  // '&.active': { backgroundColor: "orangered" },
+  ":hover": {
+    backgroundColor: "Highlight",
+    cursor: "pointer"
+  }
+}
+)
+
 export const LinkToFamily = styled(NavLink)({
   transition: " opacity ",
   textDecoration: "none",
