@@ -16,14 +16,18 @@ export const Logout = () => {
     textDecoration: "none",
     color: "black",
     backgroundColor: "grey",
-    fontWeight: "500"
+    fontWeight: "500",
+    ":hover": {
+      backgroundColor: "Highlight",
+      cursor: "pointer"
+    }
   }
   );
   const handleSubmit = async () => {
     const logoutResponse = await logoutUser();
     if (logoutResponse.success === true) {
       logOut();
-      localStorage.removeItem("user");
+      // localStorage.removeItem("user");
       alert(`${logoutResponse.logoutMessage}`);
       navigate("/home");
     } else if (logoutResponse.errorStatus === 401) {
@@ -32,7 +36,10 @@ export const Logout = () => {
       localStorage.removeItem("user");
       navigate("/home");
       return;
-    } alert(`Something went wrong.Try again`);
+    } else if (logoutResponse.success === false) {
+      console.log(logoutResponse.errorReason);
+      alert(`Something went wrong.Try again`)
+    };
     return <Navigate to="/home" />;
 
   }

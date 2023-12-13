@@ -15,6 +15,10 @@ import styled from '@emotion/styled';
 //   padding: '50px'});
 
 export const FormContainer = styled('div')({
+  position: "absolute",
+  opacity: "0.9",
+  top: "10%",
+  left: "10%",
   backgroundColor: '#e3dfd5',
   padding: '50px 100px',
   margin: `50px`,

@@ -26,7 +26,7 @@ export const Family: React.FC = () => {
   const [updating, setUpdating] = useState(0);
   const { name, token, _id } = useUser();
   const { ownerId } = useParams();
-  const { logOut, email } = useUser();
+  const { logOut } = useUser();
   const closeOpenModal = () => { setShowModal(prev => !prev) };
   const update = () => { setUpdating(prev => { return (prev + 1) }) };
   const onRemove = async (id: string) => {
@@ -88,7 +88,7 @@ export const Family: React.FC = () => {
                   <StyledTitle>{item.breed}</StyledTitle>
                   <StyledTitle>{item.birthday}</StyledTitle>
                   <StyledTitle>{item.forSale ? "For sale" : "Not for sale"}</StyledTitle>
-                  <StyledTitle>{email}</StyledTitle>
+                  {/* <StyledTitle>{email}</StyledTitle> */}
                   {/* {token && <button type="button" onClick={() => onRemove(item._id)} style={{ float: "right" }}>Remove</button>} */}
                 </StyledCardContainer>
               </LinkToFamily>
