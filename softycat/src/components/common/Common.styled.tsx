@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
 
 export const CommonContainer = styled('div')({
+  position: "relative",
   maxWidth: "1200px",
   margin: " 0 auto",
   padding: "0 16px"
