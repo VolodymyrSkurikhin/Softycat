@@ -3,7 +3,11 @@ import { useState } from "react";
 
 import { ChatFormStyled, Input, Btn } from "./ChatForm.styled";
 
-export const ChatForm = ({ onSubmit }: any) => {
+interface IChatFormProps {
+  onSubmit: (message: string) => void;
+}
+
+export const ChatForm: React.FC<IChatFormProps> = ({ onSubmit }: IChatFormProps) => {
   const [state, setState] = useState({ message: "" });
   const handleChange = ({ target }: any) => {
     const { name, value } = target;
@@ -14,7 +18,9 @@ export const ChatForm = ({ onSubmit }: any) => {
   }
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    onSubmit(state);
+    const { message } = state;
+    // onSubmit({ ...state });
+    onSubmit(message);
     setState({ message: "" })
   }
 

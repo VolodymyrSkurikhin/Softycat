@@ -14,6 +14,7 @@ import { useUser } from "./components/userContext";
 import { Family } from "./pages/Family";
 import { Images } from "./pages/Images";
 import { About } from "./pages/About";
+import { Chat } from "./components/Chat/Chat";
 
 // import list from "./Service/list.json";
 
@@ -52,6 +53,7 @@ const App: React.FC = () => {
     {/* <Container>
       <OwnerList owners={list} />
     </Container> */}
+    <Chat />
   </CommonContainer>
   );
 }
