@@ -15,7 +15,7 @@ interface IProps {
 export const ChatMessages: React.FC<IProps> = ({ items = [] }: IProps) => {
   const elements = items.map(({ author, id, message, type, time }) => {
     const element = type === "yours" ? (<YourMessage key={id}>{author}   {message}<TimeStamp>{time}</TimeStamp></YourMessage>)
-      : (<MyMessage key={id}>{author}+"   "+{message}<TimeStamp>{time}</TimeStamp></MyMessage>);
+      : (<MyMessage key={id}>{author}    {message}<TimeStamp>{time}</TimeStamp></MyMessage>);
     return element
   })
   return (<ChatMessagesContainer>{elements}</ChatMessagesContainer>)

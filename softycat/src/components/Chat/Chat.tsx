@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { nanoid } from "nanoid";
 import { useUser } from "../userContext";
@@ -16,6 +16,17 @@ export const Chat: React.FC = () => {
   const navigate = useNavigate();
   const [isChatOn, setIsChatOn] = useState(false);
   const [content, setContent] = useState<IItem[]>([]);
+  useEffect(() => {
+    socket.on("chat-message", (incomingContent: IItem) => {
+      const newContent: IItem = {
+        author: incomingContent.author, id: incomingContent.id,
+        message: incomingContent.message, type: "yours", time: incomingContent.time
+      };
+      setContent(prevContent => {
+        return [...prevContent, newContent]
+      });
+    })
+  }, []);
   const change = async (openFunc: any) => {
     const result = await getCurrentUser();
     if (result.success) {
@@ -40,11 +51,12 @@ export const Chat: React.FC = () => {
   const showHideChat = () => { setIsChatOn(prev => !prev) };
   const btnText = isChatOn ? "Close chat" : "Open chat";
   const addMessage = (message: string) => {
+    const newContent: IItem = { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
     setContent(prevContent => {
-      const newContent: IItem = { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
+      // newContent= { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
       return [...prevContent, newContent]
     });
-    socket.emit("chat-message", message);
+    socket.emit("chat-message", newContent);
   }
   return (<ChatStyled>
     {(!name || !token) && <p>Register or login to start chat</p>}
