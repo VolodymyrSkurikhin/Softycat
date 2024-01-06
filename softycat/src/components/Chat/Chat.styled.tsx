@@ -7,5 +7,7 @@ export const ChatStyled = styled("div")({
   zIndex: "1",
   display: "flex",
   flexDirection: "column",
-  padding: "10px"
+  alignItems: "start",
+  padding: "10px",
+  maxWidth: "25%"
 })

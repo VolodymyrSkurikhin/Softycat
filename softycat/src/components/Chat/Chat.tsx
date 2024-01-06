@@ -50,13 +50,34 @@ export const Chat: React.FC = () => {
   }
   const showHideChat = () => { setIsChatOn(prev => !prev) };
   const btnText = isChatOn ? "Close chat" : "Open chat";
-  const addMessage = (message: string) => {
-    const newContent: IItem = { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
-    setContent(prevContent => {
-      // newContent= { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
-      return [...prevContent, newContent]
-    });
-    socket.emit("chat-message", newContent);
+  const addMessage = async (message: string) => {
+    const result = await getCurrentUser();
+    if (result.success) {
+      if (result.user.email === email) {
+        const newContent: IItem = { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
+        setContent(prevContent => {
+          // newContent= { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
+          return [...prevContent, newContent]
+        });
+        socket.emit("chat-message", newContent);
+      }
+      else {
+        alert("Login again, please!");
+        logOut();
+        return
+      }
+    }
+    if (!result.success) {
+      if (result.errorStatus === 401) {
+        alert("Please,login again!");
+        logOut();
+        navigate('/home');
+        return
+      }
+      alert("Something went wrong, try later, please!");
+      navigate('/home');
+    }
+
   }
   return (<ChatStyled>
     {(!name || !token) && <p>Register or login to start chat</p>}

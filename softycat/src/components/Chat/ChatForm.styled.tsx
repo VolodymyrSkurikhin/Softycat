@@ -15,5 +15,10 @@ export const Input = styled("input")({
 export const Btn = styled("button")({
   padding: "2px",
   borderRadius: "10%",
-  backgroundColor: "blue"
+  backgroundColor: "blue",
+  textAlign: "center",
+  ":hover": {
+    backgroundColor: "Highlight",
+    cursor: "pointer"
+  }
 })
