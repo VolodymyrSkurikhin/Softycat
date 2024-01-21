@@ -8,7 +8,7 @@ import { StyledBtn } from "../profile/StyledBtn";
 import { getCurrentUser } from "../../Service/axiosFns";
 import { IItem } from "./ChatMessages";
 
-const socket = io("http://localhost:4000");
+export const socket = io("http://localhost:4000");
 
 
 export const Chat: React.FC = () => {
@@ -17,7 +17,10 @@ export const Chat: React.FC = () => {
   const [isChatOn, setIsChatOn] = useState(false);
   const [content, setContent] = useState<IItem[]>([]);
   useEffect(() => {
+    console.log("subscribing");
     socket.on("chat-message", (incomingContent: IItem) => {
+      console.log("incoming content", incomingContent);
+
       const newContent: IItem = {
         author: incomingContent.author, id: incomingContent.id,
         message: incomingContent.message, type: "yours", time: incomingContent.time
@@ -49,7 +52,7 @@ export const Chat: React.FC = () => {
     }
   }
   const showHideChat = () => { setIsChatOn(prev => !prev) };
-  const btnText = isChatOn ? "Close chat" : "Open chat";
+  const btnText = isChatOn ? "Close common chat" : "Open common chat";
   const addMessage = async (message: string) => {
     const result = await getCurrentUser();
     if (result.success) {

@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 import { ChatFormStyled, Input, Btn } from "./ChatForm.styled";
 
 interface IChatFormProps {
