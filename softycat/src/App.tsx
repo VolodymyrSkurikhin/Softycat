@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
 // import Animal from "react-animals";
 import { Home } from "./pages/Home";
 import { SignUp } from "./pages/Signup";
@@ -15,11 +16,21 @@ import { Family } from "./pages/Family";
 import { Images } from "./pages/Images";
 import { About } from "./pages/About";
 import { Chat } from "./components/Chat/Chat";
+import { getCurrentUser } from "./Service/axiosFns";
 
 // import list from "./Service/list.json";
 
 const App: React.FC = () => {
-  const { token } = useUser();
+  const { token, logOut } = useUser();
+  useEffect(() => {
+    async function checkLogin() {
+      const result = await getCurrentUser();
+      if (!result.success) { logOut() };
+      return
+    };
+    checkLogin()
+  }, [logOut])
+
   return (<CommonContainer>
     <Header>
       {/* <Logo>

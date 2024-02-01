@@ -1,26 +1,28 @@
-import { io } from "socket.io-client";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { nanoid } from "nanoid";
+
 import { useUser } from "../userContext";
 import { ChatStyled, ChatMessages, ChatForm } from "../Chat";
 import { StyledBtn } from "../profile/StyledBtn";
 import { getCurrentUser } from "../../Service/axiosFns";
-import { IItem } from "./ChatMessages";
+import { IItem } from "../Chat/ChatMessages";
+import { socket } from "../Chat/Chat";
+import { PrivateChatInvitForm } from "./InvitForm";
 
-export const socket = io("http://localhost:4000");
+// interface IInvite {
+//   peer: string
+// }
 
 
-export const Chat: React.FC = () => {
+
+export const PrivateChat: React.FC = () => {
   const { name, token, logOut, email } = useUser();
   const navigate = useNavigate();
   const [isChatOn, setIsChatOn] = useState(false);
+  const [isInviteOn, setIsInviteOn] = useState(true);
+  // const [invitation, setInvitation] = useState<IInvite>({ room: "", peer: "" });
   const [content, setContent] = useState<IItem[]>([]);
-  useEffect(() => {
-    if (!name && !token) { return };
-    socket.emit("join", name, token)
-  }, [name, token]);
-  useEffect(() => { socket.on("join", (message) => { alert(message) }) }, []);
   useEffect(() => {
     console.log("subscribing");
     socket.on("chat-message", (incomingContent: IItem) => {
@@ -57,14 +59,43 @@ export const Chat: React.FC = () => {
     }
   }
   const showHideChat = () => { setIsChatOn(prev => !prev) };
-  const btnText = isChatOn ? "Close common chat" : "Open common chat";
+  const showHideInvite = () => { setIsInviteOn(prev => !prev) };
+  const btnText = isChatOn ? "Close private chat" : "Open private chat";
+
+  const invite = async (peer: string) => {
+    const result = await getCurrentUser();
+    if (result.success) {
+      if (result.user.email === email) {
+        // const newInvitation: IInvite = { peer };
+        // setInvitation(newInvitation);
+        socket.emit("joinPrivate", peer);
+        showHideInvite();
+      }
+      else {
+        alert("Login again, please!");
+        logOut();
+        return
+      }
+    }
+    if (!result.success) {
+      if (result.errorStatus === 401) {
+        alert("Please,login again!");
+        logOut();
+        navigate('/home');
+        return
+      }
+      alert("Something went wrong, try later, please!");
+      navigate('/home');
+    }
+
+  }
+
   const addMessage = async (message: string) => {
     const result = await getCurrentUser();
     if (result.success) {
       if (result.user.email === email) {
         const newContent: IItem = { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
         setContent(prevContent => {
-          // newContent= { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
           return [...prevContent, newContent]
         });
         socket.emit("chat-message", newContent);
@@ -88,10 +119,10 @@ export const Chat: React.FC = () => {
 
   }
   return (<ChatStyled>
-    {(!name || !token) && <p>Register or login to start chat</p>}
     {(name && token) && <StyledBtn type="button" onClick={() => { change(showHideChat) }}>
       {`${btnText}`}</StyledBtn>}
-    {name && token && isChatOn && <><ChatMessages items={content} />
-      <ChatForm onSubmit={addMessage} /></>}
+    {name && token && isChatOn && !isInviteOn && <ChatMessages items={content} />}
+    {name && token && isChatOn && !isInviteOn && <ChatForm onSubmit={addMessage} />}
+    {name && token && isInviteOn && <PrivateChatInvitForm onSubmit={invite} />}
   </ChatStyled>)
 }
