@@ -62,13 +62,13 @@ export const PrivateChat: React.FC = () => {
   const showHideInvite = () => { setIsInviteOn(prev => !prev) };
   const btnText = isChatOn ? "Close private chat" : "Open private chat";
 
-  const invite = async (peer: string) => {
+  const invite = async (peer: string, message: string) => {
     const result = await getCurrentUser();
     if (result.success) {
       if (result.user.email === email) {
         // const newInvitation: IInvite = { peer };
         // setInvitation(newInvitation);
-        socket.emit("joinPrivate", peer);
+        socket.emit("joinPrivate", peer, message);
         showHideInvite();
       }
       else {

@@ -3,16 +3,18 @@ import { useState } from "react";
 import { ChatFormStyled, Input, Btn } from "../Chat/ChatForm.styled";
 // import { nanoid } from "nanoid";
 
+// interface IP { peer: string; message: string }
+
 interface IChatFormProps {
-  onSubmit: (peer: string) => void;
+  onSubmit: (peer: string, message: string) => void;
 }
 
 export const PrivateChatInvitForm: React.FC<IChatFormProps> = ({ onSubmit }: IChatFormProps) => {
-  const [state, setState] = useState({ peer: "" });
+  const [state, setState] = useState({ peer: "", message: "" });
   const handleChange = ({ elements }: any) => {
     const { name, value } = elements.currentTtarget;
     setState(prevState => {
-      return ({ ...prevState, [name]: value })
+      return ({ ...prevState, [name]: value.trim() })
     })
   }
   const handleSubmit = (e: any) => {
@@ -22,18 +24,18 @@ export const PrivateChatInvitForm: React.FC<IChatFormProps> = ({ onSubmit }: ICh
       return
     }
     e.preventDefault();
-    const { peer } = state;
+    const { peer, message } = state;
     // onSubmit({ ...state });
 
-    onSubmit(peer);
-    setState({ peer: "" })
+    onSubmit(peer, message);
+    setState({ peer: "", message: "" })
   }
 
-  const { peer } = state;
+  const { peer, message } = state;
 
   return (<ChatFormStyled onSubmit={handleSubmit}>
     <Input type="text" name="peer" value={peer} onChange={handleChange} placeholder="Type your correspondent`s name" autoComplete="off" />
-    {/* <Input type="text" name="message" value={message} onChange={handleChange} placeholder="Type your message" autoComplete="off" /> */}
+    <Input type="text" name="message" value={message} onChange={handleChange} placeholder="Type your message" autoComplete="off" />
     <Btn>
       Invite your friend
     </Btn>
