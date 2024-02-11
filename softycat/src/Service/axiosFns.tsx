@@ -171,6 +171,7 @@ export async function registerUser(regData: IRegisterData): Promise<ISuccessResu
     if (regResponse.status === 201) {
       const loginResponse = await axios.post('auth/login', regData);
       console.log(loginResponse);
+
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + loginResponse.data.token;
       return {
         success: true,

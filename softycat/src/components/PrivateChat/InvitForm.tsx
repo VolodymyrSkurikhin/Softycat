@@ -11,8 +11,8 @@ interface IChatFormProps {
 
 export const PrivateChatInvitForm: React.FC<IChatFormProps> = ({ onSubmit }: IChatFormProps) => {
   const [state, setState] = useState({ peer: "", message: "" });
-  const handleChange = ({ elements }: any) => {
-    const { name, value } = elements.currentTtarget;
+  const handleChange = ({ target: { value, name } }: any) => {
+    // const { name, value } = target;
     setState(prevState => {
       return ({ ...prevState, [name]: value.trim() })
     })

@@ -1,4 +1,4 @@
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { nanoid } from "nanoid";
@@ -7,21 +7,29 @@ import { ChatStyled, ChatMessages, ChatForm } from "../Chat";
 import { StyledBtn } from "../profile/StyledBtn";
 import { getCurrentUser } from "../../Service/axiosFns";
 import { IItem } from "./ChatMessages";
+import { useSocket } from "../socketContext";
 
-export const socket = io("http://localhost:4000");
+// export const socket = io("http://localhost:4000");
+
 
 
 export const Chat: React.FC = () => {
+  const { socket } = useSocket();
   const { name, token, logOut, email } = useUser();
   const navigate = useNavigate();
   const [isChatOn, setIsChatOn] = useState(false);
   const [content, setContent] = useState<IItem[]>([]);
   useEffect(() => {
+    if (!socket) return;
     if (!name && !token) { return };
     socket.emit("join", name, token)
-  }, [name, token]);
-  useEffect(() => { socket.on("join", (message) => { alert(message) }) }, []);
+  }, [name, token, socket]);
   useEffect(() => {
+    if (!socket) return;
+    socket.on("join", (message) => { alert(message) })
+  }, [socket]);
+  useEffect(() => {
+    if (!socket) return;
     console.log("subscribing");
     socket.on("chat-message", (incomingContent: IItem) => {
       console.log("incoming content", incomingContent);
@@ -34,7 +42,7 @@ export const Chat: React.FC = () => {
         return [...prevContent, newContent]
       });
     })
-  }, []);
+  }, [socket]);
   const change = async (openFunc: any) => {
     const result = await getCurrentUser();
     if (result.success) {
@@ -61,7 +69,7 @@ export const Chat: React.FC = () => {
   const addMessage = async (message: string) => {
     const result = await getCurrentUser();
     if (result.success) {
-      if (result.user.email === email) {
+      if (result.user.email === email && socket) {
         const newContent: IItem = { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
         setContent(prevContent => {
           // newContent= { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };

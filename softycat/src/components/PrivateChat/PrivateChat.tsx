@@ -68,7 +68,8 @@ export const PrivateChat: React.FC = () => {
       if (result.user.email === email) {
         // const newInvitation: IInvite = { peer };
         // setInvitation(newInvitation);
-        socket.emit("joinPrivate", peer, message);
+        const sender = name;
+        socket.emit("joinPrivate", peer, message, sender, token);
         showHideInvite();
       }
       else {
