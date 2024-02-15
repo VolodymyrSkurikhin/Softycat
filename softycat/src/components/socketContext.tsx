@@ -30,7 +30,7 @@ export const SocketProvider = ({ children }: any) => {
       const newSocket = io("http://localhost:4000", { autoConnect: false });
       newSocket.auth = { token };
       newSocket.on("connect_error", (err) => {
-        alert(`Socket connection error ${err.message}`)
+        alert(`Chat connection error ${err.message}`)
       });
       newSocket.connect();
       setSocket(newSocket);

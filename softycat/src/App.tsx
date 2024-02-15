@@ -23,13 +23,15 @@ import { getCurrentUser } from "./Service/axiosFns";
 const App: React.FC = () => {
   const { token, logOut } = useUser();
   useEffect(() => {
+    if (!token) { return };
     async function checkLogin() {
       const result = await getCurrentUser();
+      console.log(result);
       if (!result.success) { logOut() };
       return
     };
     checkLogin()
-  }, [logOut])
+  }, [logOut, token])
 
   return (<CommonContainer>
     <Header>

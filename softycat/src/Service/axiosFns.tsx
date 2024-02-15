@@ -334,10 +334,12 @@ export async function getAllUsers(): Promise<IAllUsersSuccessResult | IErrorResu
       throw new Error("Unexpected error occured");
     }
   }
-
 }
+
 export async function getCurrentUser(): Promise<ICurrentUserSuccessResult | IErrorResult> {
+
   try {
+    console.log(axios.defaults.headers.common['Authorization']);
     const res = await axios.get('auth/current');
     return {
       success: true,
