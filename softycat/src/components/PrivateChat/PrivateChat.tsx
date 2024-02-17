@@ -27,12 +27,12 @@ export const PrivateChat: React.FC = () => {
   const [content, setContent] = useState<IItem[]>([]);
   useEffect(() => {
     console.log("subscribing");
-    socket && socket.on("chat-message", (incomingContent: IItem) => {
+    socket && socket.on("private-message", (incomingContent: IItem) => {
       console.log("incoming content", incomingContent);
 
       const newContent: IItem = {
         author: incomingContent.author, id: incomingContent.id,
-        message: incomingContent.message, type: "yours", time: incomingContent.time
+        message: incomingContent.message, type: "yours", time: new Date().toLocaleString()
       };
       setContent(prevContent => {
         return [...prevContent, newContent]
@@ -73,6 +73,7 @@ export const PrivateChat: React.FC = () => {
         const sender = name;
         if (!socket) { alert("Connection to private chat is not established. Try later,please"); return }
         socket.emit("joinPrivate", peer, message, sender, token);
+        socket.on("joinPrivate", (reply) => (alert(reply)));
         showHideInvite();
       }
       else {

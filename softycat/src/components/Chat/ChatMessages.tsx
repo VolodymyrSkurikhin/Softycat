@@ -5,7 +5,7 @@ export interface IItem {
   id: string,
   message: string,
   type: "my" | "yours",
-  time: string
+  time: string,
 }
 
 interface IProps {
