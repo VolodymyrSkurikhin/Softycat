@@ -20,7 +20,7 @@ export const PrivateChatInvitForm: React.FC<IChatFormProps> = ({ onSubmit }: ICh
   const handleSubmit = (e: any) => {
     const isDisable = Object.values(state).some(v => !v);
     if (isDisable) {
-      alert("Enter name of your correspondent, please!");
+      alert("Enter name of your correspondent and message, please!");
       return
     }
     e.preventDefault();

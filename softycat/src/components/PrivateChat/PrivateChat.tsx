@@ -7,8 +7,9 @@ import { ChatStyled, ChatMessages, ChatForm } from "../Chat";
 import { StyledBtn } from "../profile/StyledBtn";
 import { getCurrentUser } from "../../Service/axiosFns";
 import { IItem } from "../Chat/ChatMessages";
-import { socket } from "../Chat/Chat";
+// import { socket } from "../Chat/Chat";
 import { PrivateChatInvitForm } from "./InvitForm";
+import { useSocket } from "../socketContext";
 
 // interface IInvite {
 //   peer: string
@@ -21,11 +22,12 @@ export const PrivateChat: React.FC = () => {
   const navigate = useNavigate();
   const [isChatOn, setIsChatOn] = useState(false);
   const [isInviteOn, setIsInviteOn] = useState(true);
+  const { socket } = useSocket();
   // const [invitation, setInvitation] = useState<IInvite>({ room: "", peer: "" });
   const [content, setContent] = useState<IItem[]>([]);
   useEffect(() => {
     console.log("subscribing");
-    socket.on("chat-message", (incomingContent: IItem) => {
+    socket && socket.on("chat-message", (incomingContent: IItem) => {
       console.log("incoming content", incomingContent);
 
       const newContent: IItem = {
@@ -36,7 +38,7 @@ export const PrivateChat: React.FC = () => {
         return [...prevContent, newContent]
       });
     })
-  }, []);
+  }, [socket]);
   const change = async (openFunc: any) => {
     const result = await getCurrentUser();
     if (result.success) {
@@ -69,6 +71,7 @@ export const PrivateChat: React.FC = () => {
         // const newInvitation: IInvite = { peer };
         // setInvitation(newInvitation);
         const sender = name;
+        if (!socket) { alert("Connection to private chat is not established. Try later,please"); return }
         socket.emit("joinPrivate", peer, message, sender, token);
         showHideInvite();
       }
@@ -99,7 +102,7 @@ export const PrivateChat: React.FC = () => {
         setContent(prevContent => {
           return [...prevContent, newContent]
         });
-        socket.emit("chat-message", newContent);
+        socket && socket.emit("chat-message", newContent);
       }
       else {
         alert("Login again, please!");

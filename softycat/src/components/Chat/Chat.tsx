@@ -19,15 +19,15 @@ export const Chat: React.FC = () => {
   const navigate = useNavigate();
   const [isChatOn, setIsChatOn] = useState(false);
   const [content, setContent] = useState<IItem[]>([]);
-  useEffect(() => {
-    if (!socket) return;
-    if (!name && !token) { return };
-    socket.emit("join", name, token)
-  }, [name, token, socket]);
-  useEffect(() => {
-    if (!socket) return;
-    socket.on("join", (message) => { alert(message) })
-  }, [socket]);
+  // useEffect(() => {
+  //   if (!socket) return;
+  //   if (!name && !token) { return };
+  //   socket.emit("join", name, token)
+  // }, [name, token, socket]);
+  // useEffect(() => {
+  //   if (!socket) return;
+  //   socket.on("join", (message) => { alert(message) })
+  // }, [socket]);
   useEffect(() => {
     if (!socket) return;
     console.log("subscribing");
