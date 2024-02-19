@@ -34,7 +34,7 @@ export const PrivateChatInvitForm: React.FC<IChatFormProps> = ({ onSubmit }: ICh
   const { peer, message } = state;
 
   return (<ChatFormStyled onSubmit={handleSubmit}>
-    <Input type="text" name="peer" value={peer} onChange={handleChange} placeholder="Type your correspondent`s name" autoComplete="off" />
+    <Input type="text" name="peer" value={peer} onChange={handleChange} placeholder="Type your friend`s name" autoComplete="off" />
     <Input type="text" name="message" value={message} onChange={handleChange} placeholder="Type your message" autoComplete="off" />
     <Btn>
       Invite your friend

@@ -17,6 +17,7 @@ import { Images } from "./pages/Images";
 import { About } from "./pages/About";
 import { Chat } from "./components/Chat/Chat";
 import { getCurrentUser } from "./Service/axiosFns";
+import { PrivateChat } from "./components/PrivateChat/PrivateChat";
 
 // import list from "./Service/list.json";
 
@@ -67,6 +68,7 @@ const App: React.FC = () => {
       <OwnerList owners={list} />
     </Container> */}
     <Chat />
+    <PrivateChat />
   </CommonContainer>
   );
 }

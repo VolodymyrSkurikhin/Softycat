@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { nanoid } from "nanoid";
 
 import { useUser } from "../userContext";
-import { ChatStyled, ChatMessages, ChatForm } from "../Chat";
+import { ChatMessages, ChatForm } from "../Chat";
+import { PrivateChatStyled } from "./PrivateChat.styled";
 import { StyledBtn } from "../profile/StyledBtn";
 import { getCurrentUser } from "../../Service/axiosFns";
 import { IItem } from "../Chat/ChatMessages";
@@ -21,15 +22,15 @@ export const PrivateChat: React.FC = () => {
   const { name, token, logOut, email } = useUser();
   const navigate = useNavigate();
   const [isChatOn, setIsChatOn] = useState(false);
-  const [isInviteOn, setIsInviteOn] = useState(true);
+  const [isInviteOn, setIsInviteOn] = useState(false);
   const { socket } = useSocket();
   // const [invitation, setInvitation] = useState<IInvite>({ room: "", peer: "" });
   const [content, setContent] = useState<IItem[]>([]);
   useEffect(() => {
     console.log("subscribing");
     socket && socket.on("private-message", (incomingContent: IItem) => {
+      if (isChatOn === false) { showHideChat() };
       console.log("incoming content", incomingContent);
-
       const newContent: IItem = {
         author: incomingContent.author, id: incomingContent.id,
         message: incomingContent.message, type: "yours", time: new Date().toLocaleString()
@@ -38,7 +39,7 @@ export const PrivateChat: React.FC = () => {
         return [...prevContent, newContent]
       });
     })
-  }, [socket]);
+  }, [socket, isChatOn]);
   const change = async (openFunc: any) => {
     const result = await getCurrentUser();
     if (result.success) {
@@ -75,6 +76,7 @@ export const PrivateChat: React.FC = () => {
         socket.emit("joinPrivate", peer, message, sender, token);
         socket.on("joinPrivate", (reply) => (alert(reply)));
         showHideInvite();
+        showHideChat()
       }
       else {
         alert("Login again, please!");
@@ -103,7 +105,7 @@ export const PrivateChat: React.FC = () => {
         setContent(prevContent => {
           return [...prevContent, newContent]
         });
-        socket && socket.emit("chat-message", newContent);
+        socket && socket.emit("private-message", newContent);
       }
       else {
         alert("Login again, please!");
@@ -123,11 +125,11 @@ export const PrivateChat: React.FC = () => {
     }
 
   }
-  return (<ChatStyled>
-    {(name && token) && <StyledBtn type="button" onClick={() => { change(showHideChat) }}>
+  return (<PrivateChatStyled>
+    {(name && token) && <StyledBtn type="button" onClick={() => { change(showHideInvite) }}>
       {`${btnText}`}</StyledBtn>}
-    {name && token && isChatOn && !isInviteOn && <ChatMessages items={content} />}
-    {name && token && isChatOn && !isInviteOn && <ChatForm onSubmit={addMessage} />}
+    {name && token && isChatOn && <ChatMessages items={content} />}
+    {name && token && isChatOn && <ChatForm onSubmit={addMessage} />}
     {name && token && isInviteOn && <PrivateChatInvitForm onSubmit={invite} />}
-  </ChatStyled>)
+  </PrivateChatStyled>)
 }
