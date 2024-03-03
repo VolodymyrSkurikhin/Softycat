@@ -1,3 +1,4 @@
+import { BtnToLeave } from "./ChatForm.styled";
 import { ChatMessagesContainer, MyMessage, TimeStamp, YourMessage, Name } from "./ChatMessages.styled";
 
 export interface IItem {
@@ -9,10 +10,11 @@ export interface IItem {
 }
 
 interface IProps {
-  items: IItem[];
+  items: IItem[],
+  onLeave: () => void
 }
 
-export const ChatMessages: React.FC<IProps> = ({ items = [] }: IProps) => {
+export const ChatMessages: React.FC<IProps> = ({ items = [], onLeave }: IProps) => {
   const elements = items.map(({ author, id, message, type, time }) => {
     const element = type === "yours" ? (<YourMessage key={id}>{message}
       <Name>{author}</Name>
@@ -24,5 +26,6 @@ export const ChatMessages: React.FC<IProps> = ({ items = [] }: IProps) => {
       </MyMessage>);
     return element
   })
-  return (<ChatMessagesContainer>{elements}</ChatMessagesContainer>)
+  return (<ChatMessagesContainer>{elements}
+    <BtnToLeave onClick={() => onLeave()}>Leave chat</BtnToLeave></ChatMessagesContainer>)
 }

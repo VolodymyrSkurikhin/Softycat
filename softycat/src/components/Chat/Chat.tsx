@@ -93,13 +93,13 @@ export const Chat: React.FC = () => {
       alert("Something went wrong, try later, please!");
       navigate('/home');
     }
-
   }
+  const leaveCommonChat = () => { };
   return (<ChatStyled>
     {(!name || !token) && <p>Register or login to start chat</p>}
     {(name && token) && <StyledBtn type="button" onClick={() => { change(showHideChat) }}>
       {`${btnText}`}</StyledBtn>}
-    {name && token && isChatOn && <><ChatMessages items={content} />
+    {name && token && isChatOn && <><ChatMessages items={content} onLeave={leaveCommonChat} />
       <ChatForm onSubmit={addMessage} /></>}
   </ChatStyled>)
 }

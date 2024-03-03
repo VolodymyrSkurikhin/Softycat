@@ -22,3 +22,14 @@ export const Btn = styled("button")({
     cursor: "pointer"
   }
 })
+
+export const BtnToLeave = styled("button")({
+  padding: "2px",
+  borderRadius: "10%",
+  backgroundColor: "red",
+  textAlign: "center",
+  ":hover": {
+    backgroundColor: "Highlight",
+    cursor: "pointer"
+  }
+})

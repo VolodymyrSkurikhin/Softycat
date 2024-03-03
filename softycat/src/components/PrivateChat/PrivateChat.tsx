@@ -26,10 +26,13 @@ export const PrivateChat: React.FC = () => {
   const { socket } = useSocket();
   // const [invitation, setInvitation] = useState<IInvite>({ room: "", peer: "" });
   const [content, setContent] = useState<IItem[]>([]);
+  const showHideChat = () => { setIsChatOn(prev => !prev) };
+  const showHideInvite = () => { setIsInviteOn(prev => !prev) };
   useEffect(() => {
     console.log("subscribing");
-    socket && socket.on("private-message", (incomingContent: IItem) => {
-      if (isChatOn === false) { showHideChat() };
+    socket && socket.on("private-message", (incomingContent) => {
+      setIsChatOn(true);
+      // if (isChatOn === false) { showHideChat() };
       console.log("incoming content", incomingContent);
       const newContent: IItem = {
         author: incomingContent.author, id: incomingContent.id,
@@ -39,7 +42,7 @@ export const PrivateChat: React.FC = () => {
         return [...prevContent, newContent]
       });
     })
-  }, [socket, isChatOn]);
+  }, [socket]);
   const change = async (openFunc: any) => {
     const result = await getCurrentUser();
     if (result.success) {
@@ -61,9 +64,8 @@ export const PrivateChat: React.FC = () => {
       navigate('/home');
     }
   }
-  const showHideChat = () => { setIsChatOn(prev => !prev) };
-  const showHideInvite = () => { setIsInviteOn(prev => !prev) };
-  const btnText = isChatOn ? "Close private chat" : "Open private chat";
+
+  const btnText = isChatOn || isInviteOn ? "Close private chat" : "Open private chat";
 
   const invite = async (peer: string, message: string) => {
     const result = await getCurrentUser();
@@ -123,12 +125,12 @@ export const PrivateChat: React.FC = () => {
       alert("Something went wrong, try later, please!");
       navigate('/home');
     }
-
   }
+  const leavePrivateChat = () => { }
   return (<PrivateChatStyled>
     {(name && token) && <StyledBtn type="button" onClick={() => { change(showHideInvite) }}>
       {`${btnText}`}</StyledBtn>}
-    {name && token && isChatOn && <ChatMessages items={content} />}
+    {name && token && isChatOn && <ChatMessages items={content} onLeave={leavePrivateChat} />}
     {name && token && isChatOn && <ChatForm onSubmit={addMessage} />}
     {name && token && isInviteOn && <PrivateChatInvitForm onSubmit={invite} />}
   </PrivateChatStyled>)
