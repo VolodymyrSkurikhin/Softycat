@@ -12,11 +12,6 @@ import { IItem } from "../Chat/ChatMessages";
 import { PrivateChatInvitForm } from "./InvitForm";
 import { useSocket } from "../socketContext";
 
-// interface IInvite {
-//   peer: string
-// }
-
-
 
 export const PrivateChat: React.FC = () => {
   const { name, token, logOut, email } = useUser();
@@ -26,6 +21,7 @@ export const PrivateChat: React.FC = () => {
   const { socket } = useSocket();
   // const [invitation, setInvitation] = useState<IInvite>({ room: "", peer: "" });
   const [content, setContent] = useState<IItem[]>([]);
+  const [roomId, setRoomId] = useState("");
   const showHideChat = () => { setIsChatOn(prev => !prev) };
   const showHideInvite = () => { setIsInviteOn(prev => !prev) };
   useEffect(() => {
@@ -38,9 +34,16 @@ export const PrivateChat: React.FC = () => {
         author: incomingContent.author, id: incomingContent.id,
         message: incomingContent.message, type: "yours", time: new Date().toLocaleString()
       };
+      // const newRoomContent: IRoom = { author: incomingContent.author, room: incomingContent.newRoom };
       setContent(prevContent => {
-        return [...prevContent, newContent]
+        return [...prevContent, newContent];
       });
+    })
+  }, [socket]);
+  useEffect(() => {
+    socket && socket.on("sendRoomId", (newRoom) => {
+      setRoomId(newRoom);
+      console.log(`newRoom is...${newRoom}`)
     })
   }, [socket]);
   const change = async (openFunc: any) => {
@@ -107,7 +110,7 @@ export const PrivateChat: React.FC = () => {
         setContent(prevContent => {
           return [...prevContent, newContent]
         });
-        socket && socket.emit("private-message", newContent);
+        socket && socket.emit("private-message", { author: name, id: nanoid(), message });
       }
       else {
         alert("Login again, please!");
@@ -126,7 +129,7 @@ export const PrivateChat: React.FC = () => {
       navigate('/home');
     }
   }
-  const leavePrivateChat = () => { }
+  const leavePrivateChat = () => { socket?.emit("leavePrivateChat", name, roomId) };
   return (<PrivateChatStyled>
     {(name && token) && <StyledBtn type="button" onClick={() => { change(showHideInvite) }}>
       {`${btnText}`}</StyledBtn>}
