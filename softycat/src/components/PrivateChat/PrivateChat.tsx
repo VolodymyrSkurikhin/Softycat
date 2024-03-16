@@ -81,7 +81,11 @@ export const PrivateChat: React.FC = () => {
         socket.emit("joinPrivate", peer, message, sender, token);
         socket.on("joinPrivate", (reply) => (alert(reply)));
         showHideInvite();
-        showHideChat()
+        showHideChat();
+        const newContent: IItem = { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
+        setContent(prevContent => {
+          return [...prevContent, newContent]
+        });
       }
       else {
         alert("Login again, please!");
@@ -129,7 +133,12 @@ export const PrivateChat: React.FC = () => {
       navigate('/home');
     }
   }
-  const leavePrivateChat = () => { socket?.emit("leavePrivateChat", name, roomId) };
+  const leavePrivateChat = () => {
+    socket?.emit("leavePrivateChat", name, roomId);
+    showHideInvite();
+    showHideChat();
+    setContent([]);
+  };
   return (<PrivateChatStyled>
     {(name && token) && <StyledBtn type="button" onClick={() => { change(showHideInvite) }}>
       {`${btnText}`}</StyledBtn>}
