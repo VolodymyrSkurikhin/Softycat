@@ -6,6 +6,7 @@ export const StyledBtn = styled("button")({
   flex: "0 3 auto",
   // flexBasis: "calc((100% - 20px) / 3 - 24px)",
   borderRadius: "23%",
+  borderColor: "inherit",
   backgroundColor: "#5b8cde",
   margin: "23px",
   textAlign: "center",

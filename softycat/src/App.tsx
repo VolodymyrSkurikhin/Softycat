@@ -41,11 +41,14 @@ const App: React.FC = () => {
       </Logo> */}
       <NavStart>
         <UpLink to="/">Up</UpLink>
-        <Link to="/about">About
-        </Link>
+        <Link to="/about">About</Link>
         <Link to="/home">Cats</Link>
+
+
         {/* <Link to="/SignUp">SignUp</Link> */}
       </NavStart>
+      <Chat />
+      <PrivateChat />
       <NavEnd>
         <RegBtnContainer />
         {/* <RegBtn to="/register">Register</RegBtn>
@@ -67,8 +70,7 @@ const App: React.FC = () => {
     {/* <Container>
       <OwnerList owners={list} />
     </Container> */}
-    <Chat />
-    <PrivateChat />
+
   </CommonContainer>
   );
 }
