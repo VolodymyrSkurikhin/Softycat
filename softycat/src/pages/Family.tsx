@@ -27,6 +27,17 @@ export const Family: React.FC = () => {
   const { name, token, _id } = useUser();
   const { ownerId } = useParams();
   const { logOut } = useUser();
+  useEffect(() => {
+    (async () => {
+      if (ownerId) {
+        const result = await getAllCats(ownerId);
+        if (result.success) {
+          setCats(result.cats)
+        }
+        else { setError(result.errorReason) }
+      }
+    })()
+  }, [ownerId, updating]);
   const closeOpenModal = () => { setShowModal(prev => !prev) };
   const update = () => { setUpdating(prev => { return (prev + 1) }) };
   const onRemove = async (id: string) => {
@@ -54,17 +65,7 @@ export const Family: React.FC = () => {
     // navigate(`/home/${ownerId}`);
     // return;
   };
-  useEffect(() => {
-    (async () => {
-      if (ownerId) {
-        const result = await getAllCats(ownerId);
-        if (result.success) {
-          setCats(result.cats)
-        }
-        else { setError(result.errorReason) }
-      }
-    })()
-  }, [ownerId, updating]);
+
   if (!error) {
     if (cats.length === 0) {
       return <>{token && _id === ownerId && <button type="button" onClick={closeOpenModal} style={{ float: "right" }}>Add cat to {name}'s family</button>}

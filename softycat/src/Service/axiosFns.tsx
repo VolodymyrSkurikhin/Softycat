@@ -149,6 +149,19 @@ interface IRemoveCatErrorREsult {
   status: number | undefined
 }
 
+interface ICommonMessage {
+  author: string,
+  id: string,
+  message: string,
+  type: "my" | "yours",
+  time: string
+}
+
+interface IAllCommonMessagesSuccessResult {
+  success: true,
+  commonMessages: ICommonMessage[]
+}
+
 // const res = await registerUser(...);
 // if (res.success) {
 //    const name = res.name;
@@ -528,6 +541,29 @@ export async function updateNameOrEmail(data: Inputs, point: string): Promise<IU
     return {
       success: true,
       instance: res.data
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.status);
+      console.log(error.response?.data);
+      alert(`${error.response?.data.message}`);
+      return {
+        success: false,
+        errorReason: `${error.response?.data.message}`,
+        errorStatus: error.response?.status
+      }
+    } else {
+      throw new Error("Unexpected error occured");
+    }
+  }
+}
+
+export async function getAllCommonMessages(): Promise<IAllCommonMessagesSuccessResult | IErrorResult> {
+  try {
+    const res = await axios.get(`chat/commonMsgs/`);
+    return {
+      success: true,
+      commonMessages: res.data
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {

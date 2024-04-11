@@ -8,6 +8,8 @@ import { StyledBtn } from "../profile/StyledBtn";
 import { getCurrentUser } from "../../Service/axiosFns";
 import { IItem } from "./ChatMessages";
 import { useSocket } from "../socketContext";
+import { getAllCommonMessages } from "../../Service/axiosFns";
+
 
 // export const socket = io("http://localhost:4000");
 
@@ -19,15 +21,21 @@ export const Chat: React.FC = () => {
   const navigate = useNavigate();
   const [isChatOn, setIsChatOn] = useState(false);
   const [content, setContent] = useState<IItem[]>([]);
-  // useEffect(() => {
-  //   if (!socket) return;
-  //   if (!name && !token) { return };
-  //   socket.emit("join", name, token)
-  // }, [name, token, socket]);
-  // useEffect(() => {
-  //   if (!socket) return;
-  //   socket.on("join", (message) => { alert(message) })
-  // }, [socket]);
+  useEffect(() => {
+    (async () => {
+      const result = await getAllCommonMessages();
+      if (result.success) {
+        const allMsgs = result.commonMessages.map((item) => {
+          const type = item.author === name ? "my" : "yours";
+          item.type = type;
+          return { ...item }
+        });
+        setContent(allMsgs);
+      }
+      else { alert("Sorry, cant show previous messages right now") }
+    })()
+  }, [name]
+  );
   useEffect(() => {
     if (!socket) return;
     console.log("subscribing");
