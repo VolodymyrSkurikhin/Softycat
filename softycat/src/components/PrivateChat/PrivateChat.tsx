@@ -11,6 +11,7 @@ import { IItem } from "../Chat/ChatMessages";
 // import { socket } from "../Chat/Chat";
 import { PrivateChatInvitForm } from "./InvitForm";
 import { useSocket } from "../socketContext";
+import { BtnToHide } from "../Chat/ChatForm.styled";
 
 
 export const PrivateChat: React.FC = () => {
@@ -68,7 +69,8 @@ export const PrivateChat: React.FC = () => {
     }
   }
 
-  const btnText = isChatOn || isInviteOn ? "Close private chat" : "Open private chat";
+  // const btnText = isChatOn || isInviteOn ? "Close private chat" : "Open private chat";
+  const btnText = isInviteOn ? "Close private invitation" : "Open private invitation";
 
   const invite = async (peer: string, message: string) => {
     const result = await getCurrentUser();
@@ -133,16 +135,21 @@ export const PrivateChat: React.FC = () => {
       navigate('/home');
     }
   }
-  const leavePrivateChat = () => {
+  const leavePrivateChat = async () => {
     socket?.emit("leavePrivateChat", name, roomId);
-    showHideInvite();
-    showHideChat();
+    setIsChatOn(false);
+    // showHideInvite();
+    // showHideChat();
     setContent([]);
+    setRoomId("");
+    const result = await getCurrentUser();
+    if (!result.success) { logOut() }
   };
   return (<PrivateChatStyled>
     {(name && token) && <StyledBtn type="button" onClick={() => { change(showHideInvite) }}>
       {`${btnText}`}</StyledBtn>}
-    {name && token && isChatOn && <ChatMessages items={content} onLeave={leavePrivateChat} />}
+    {(name && token && roomId) && isChatOn ? <ChatMessages items={content} onLeave={leavePrivateChat} openClose={showHideChat} /> :
+      <BtnToHide onClick={() => showHideChat()}>Show chat</BtnToHide>}
     {name && token && isChatOn && <ChatForm onSubmit={addMessage} />}
     {name && token && isInviteOn && <PrivateChatInvitForm onSubmit={invite} />}
   </PrivateChatStyled>)

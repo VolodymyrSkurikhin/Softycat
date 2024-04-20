@@ -17,7 +17,7 @@ import { getAllCommonMessages } from "../../Service/axiosFns";
 
 export const Chat: React.FC = () => {
   const { socket } = useSocket();
-  const { name, token, logOut, email } = useUser();
+  const { name, logOut, email } = useUser();
   const navigate = useNavigate();
   const [isChatOn, setIsChatOn] = useState(false);
   const [content, setContent] = useState<IItem[]>([]);
@@ -73,7 +73,7 @@ export const Chat: React.FC = () => {
     }
   }
   const showHideChat = () => { setIsChatOn(prev => !prev) };
-  const btnText = isChatOn ? "Close common chat" : "Open common chat";
+  const btnText = isChatOn ? "Hide common chat" : "Show common chat";
   const addMessage = async (message: string) => {
     const result = await getCurrentUser();
     if (result.success) {
@@ -104,10 +104,10 @@ export const Chat: React.FC = () => {
   }
   const leaveCommonChat = () => { };
   return (<ChatStyled>
-    {(!name || !token) && <p>Register or login to start chat</p>}
-    {(name && token) && <StyledBtn type="button" onClick={() => { change(showHideChat) }}>
-      {`${btnText}`}</StyledBtn>}
-    {name && token && isChatOn && <><ChatMessages items={content} onLeave={leaveCommonChat} />
+    {/* {(!name || !token) && <p>Register or login to start chat</p>} */}
+    <StyledBtn type="button" onClick={() => { change(showHideChat) }}>
+      {`${btnText}`}</StyledBtn>
+    {isChatOn && <><ChatMessages items={content} onLeave={leaveCommonChat} openClose={showHideChat} />
       <ChatForm onSubmit={addMessage} /></>}
   </ChatStyled>)
 }

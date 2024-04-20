@@ -22,7 +22,7 @@ import { PrivateChat } from "./components/PrivateChat/PrivateChat";
 // import list from "./Service/list.json";
 
 const App: React.FC = () => {
-  const { token, logOut } = useUser();
+  const { name, token, logOut } = useUser();
   useEffect(() => {
     if (!token) { return };
     async function checkLogin() {
@@ -47,8 +47,9 @@ const App: React.FC = () => {
 
         {/* <Link to="/SignUp">SignUp</Link> */}
       </NavStart>
-      <Chat />
-      <PrivateChat />
+      {(!name || !token) && <p>Register or login to start chat</p>}
+      {name && token && <Chat />}
+      {name && token && <PrivateChat />}
       <NavEnd>
         <RegBtnContainer />
         {/* <RegBtn to="/register">Register</RegBtn>

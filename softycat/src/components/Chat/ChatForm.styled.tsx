@@ -24,9 +24,24 @@ export const Btn = styled("button")({
 })
 
 export const BtnToLeave = styled("button")({
+  float: "left",
   padding: "2px",
   borderRadius: "10%",
+  borderWidth: "0",
   backgroundColor: "red",
+  textAlign: "center",
+  ":hover": {
+    backgroundColor: "Highlight",
+    cursor: "pointer"
+  }
+})
+
+export const BtnToHide = styled("button")({
+  float: "right",
+  padding: "2px",
+  borderRadius: "10%",
+  borderWidth: "0",
+  backgroundColor: "yellow",
   textAlign: "center",
   ":hover": {
     backgroundColor: "Highlight",
