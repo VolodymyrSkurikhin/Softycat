@@ -146,11 +146,11 @@ export const PrivateChat: React.FC = () => {
     if (!result.success) { logOut() }
   };
   return (<PrivateChatStyled>
-    {(name && token) && <StyledBtn type="button" onClick={() => { change(showHideInvite) }}>
-      {`${btnText}`}</StyledBtn>}
-    {(name && token && roomId) && isChatOn ? <ChatMessages items={content} onLeave={leavePrivateChat} openClose={showHideChat} /> :
-      <BtnToHide onClick={() => showHideChat()}>Show chat</BtnToHide>}
-    {name && token && isChatOn && <ChatForm onSubmit={addMessage} />}
-    {name && token && isInviteOn && <PrivateChatInvitForm onSubmit={invite} />}
+    <StyledBtn type="button" onClick={() => { change(showHideInvite) }}>
+      {`${btnText}`}</StyledBtn>
+    {roomId && (isChatOn ? <ChatMessages items={content} onLeave={leavePrivateChat} openClose={showHideChat} /> :
+      <BtnToHide onClick={() => showHideChat()}>Show chat</BtnToHide>)}
+    {isChatOn && <ChatForm onSubmit={addMessage} />}
+    {isInviteOn && <PrivateChatInvitForm onSubmit={invite} />}
   </PrivateChatStyled>)
 }
