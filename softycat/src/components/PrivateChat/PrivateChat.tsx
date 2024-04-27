@@ -73,21 +73,37 @@ export const PrivateChat: React.FC = () => {
   const btnText = isInviteOn ? "Close private invitation" : "Open private invitation";
 
   const invite = async (peer: string, message: string) => {
+    let stop = false;
     const result = await getCurrentUser();
     if (result.success) {
       if (result.user.email === email) {
         // const newInvitation: IInvite = { peer };
         // setInvitation(newInvitation);
         const sender = name;
-        if (!socket) { alert("Connection to private chat is not established. Try later,please"); return }
+        if (!socket) {
+          alert("Connection to private chat is not established. Try later,please");
+          return
+        }
         socket.emit("joinPrivate", peer, message, sender, token);
-        socket.on("joinPrivate", (reply) => (alert(reply)));
-        showHideInvite();
-        showHideChat();
-        const newContent: IItem = { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
-        setContent(prevContent => {
-          return [...prevContent, newContent]
+        socket.on("joinPrivate", (reply) => {
+          (alert(reply));
+          if (reply === "Your correspondent is not available right now. Please, try later") { stop = true };
+          if (stop) return;
+          showHideInvite();
+          showHideChat();
+          const newContent: IItem = { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
+          setContent(prevContent => {
+            return [...prevContent, newContent]
+          });
         });
+        console.log(`this is stop ${stop}`);
+        // if (stop) return;
+        // showHideInvite();
+        // showHideChat();
+        // const newContent: IItem = { author: name, id: nanoid(), message, type: "my", time: new Date().toLocaleString() };
+        // setContent(prevContent => {
+        //   return [...prevContent, newContent]
+        // });
       }
       else {
         alert("Login again, please!");
