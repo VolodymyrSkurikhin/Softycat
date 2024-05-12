@@ -39,7 +39,8 @@ export const Chat: React.FC = () => {
   useEffect(() => {
     if (!socket) return;
     console.log("subscribing");
-    socket.on("chat-message", (incomingContent: IItem) => {
+    socket.on("chat-message", (incomingContent: IItem, reply?: string) => {
+      if (reply) { alert(reply) };
       console.log("incoming content", incomingContent);
 
       const newContent: IItem = {
