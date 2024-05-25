@@ -2,4 +2,4 @@
 import { StyledCard } from "../cards";
 
 
-export const Card = () => { <StyledCard /> }
+export const Card = () => <StyledCard /> 

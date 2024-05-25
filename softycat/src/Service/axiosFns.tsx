@@ -162,6 +162,21 @@ interface IAllCommonMessagesSuccessResult {
   commonMessages: ICommonMessage[]
 }
 
+interface IPrivateMessage {
+  starter: string,
+  corresp: string,
+  author: string,
+  id: string,
+  message: string,
+  type: "my" | "yours",
+  time: string
+}
+
+interface IAllPrivateMessagesSuccessResult {
+  success: true,
+  privateMessages: IPrivateMessage[]
+}
+
 // const res = await registerUser(...);
 // if (res.success) {
 //    const name = res.name;
@@ -564,6 +579,28 @@ export async function getAllCommonMessages(): Promise<IAllCommonMessagesSuccessR
     return {
       success: true,
       commonMessages: res.data
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.status);
+      console.log(error.response?.data);
+      alert(`${error.response?.data.message}`);
+      return {
+        success: false,
+        errorReason: `${error.response?.data.message}`,
+        errorStatus: error.response?.status
+      }
+    } else {
+      throw new Error("Unexpected error occured");
+    }
+  }
+}
+export async function getAllPrivateMessages(): Promise<IAllPrivateMessagesSuccessResult | IErrorResult> {
+  try {
+    const res = await axios.get(`chat/privateMsgs/`);
+    return {
+      success: true,
+      privateMessages: res.data
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {

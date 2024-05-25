@@ -13,15 +13,19 @@ import { PrivateChatInvitForm } from "./InvitForm";
 import { useSocket } from "../socketContext";
 import { BtnToHide } from "../Chat/ChatForm.styled";
 
+interface PrivateChatProps {
+  initialMessages: IItem[];
+}
 
-export const PrivateChat: React.FC = () => {
+
+export const PrivateChat: React.FC<PrivateChatProps> = ({ initialMessages }: PrivateChatProps) => {
   const { name, token, logOut, email } = useUser();
   const navigate = useNavigate();
   const [isChatOn, setIsChatOn] = useState(false);
   const [isInviteOn, setIsInviteOn] = useState(false);
   const { socket } = useSocket();
   // const [invitation, setInvitation] = useState<IInvite>({ room: "", peer: "" });
-  const [content, setContent] = useState<IItem[]>([]);
+  const [content, setContent] = useState<IItem[]>(initialMessages);
   const [roomId, setRoomId] = useState("");
   const showHideChat = () => { setIsChatOn(prev => !prev) };
   const showHideInvite = () => { setIsInviteOn(prev => !prev) };
@@ -32,8 +36,11 @@ export const PrivateChat: React.FC = () => {
       // if (isChatOn === false) { showHideChat() };
       console.log("incoming content", incomingContent);
       const newContent: IItem = {
-        author: incomingContent.author, id: incomingContent.id,
-        message: incomingContent.message, type: "yours", time: new Date().toLocaleString()
+        author: incomingContent.author,
+        id: incomingContent.id,
+        message: incomingContent.message,
+        type: "yours",
+        time: new Date().toLocaleString(),
       };
       // const newRoomContent: IRoom = { author: incomingContent.author, room: incomingContent.newRoom };
       setContent(prevContent => {
