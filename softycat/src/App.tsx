@@ -17,8 +17,8 @@ import { Images } from "./pages/Images";
 import { About } from "./pages/About";
 import { Chat } from "./components/Chat/Chat";
 import { getCurrentUser } from "./Service/axiosFns";
-import { PrivateChat } from "./components/PrivateChat/PrivateChat";
-
+// import { PrivateChat } from "./components/PrivateChat/PrivateChat";
+import { PrivateChatMultiple } from "./components/PrivateChat/PrivateChatMultiple";
 // import list from "./Service/list.json";
 
 const App: React.FC = () => {
@@ -49,7 +49,7 @@ const App: React.FC = () => {
       </NavStart>
       {(!name || !token) && <p>Register or login to start chat</p>}
       {name && token && <Chat />}
-      {name && token && <PrivateChat />}
+      {name && token && <PrivateChatMultiple />}
       <NavEnd>
         <RegBtnContainer />
         {/* <RegBtn to="/register">Register</RegBtn>

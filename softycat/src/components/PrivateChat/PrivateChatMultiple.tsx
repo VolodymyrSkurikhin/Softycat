@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getAllPrivateMessages } from "../../Service/axiosFns";
 import { PrivateChat } from "./PrivateChat";
+import { StyledBtn } from "../profile/StyledBtn";
 
 // interface IPrivateMessage {
 //   starter: string,
@@ -23,6 +24,8 @@ interface IItem {
 
 export const PrivateChatMultiple: React.FC = () => {
   const [multyChats, setMultyChats] = useState<IItem[][]>([]);
+  const [isChatOn, setIsChatOn] = useState(false);
+  const showHideChat = () => { setIsChatOn(prev => !prev) };
   useEffect(() => {
     (async () => {
       const result = await getAllPrivateMessages();
@@ -33,7 +36,7 @@ export const PrivateChatMultiple: React.FC = () => {
           const st = msg.starter;
           const cor = msg.corresp;
           const chatId = st + cor; // use pair of start + correspond as indetifier of chat
-          if (!(chatId in allMsgs)) {
+          if (!(chatId in msgsByChat)) {//msgsByChat instead of allMsgs???????
             msgsByChat[chatId] = [];  // initilize empty array if first time we see this chat
           }
           msgsByChat[chatId].push({  // add msg to array of msg of this chat
@@ -63,5 +66,9 @@ export const PrivateChatMultiple: React.FC = () => {
       else { alert("Sorry, cant show previous messages right now") }
     })()
   })
-  return <>{multyChats.map(item => <PrivateChat initialMessages={item} />)}</>
+  const btnText = isChatOn ? "Hide private chats" : "Show private chats";
+  return <>
+    <StyledBtn type="button" onClick={() => { showHideChat() }}>
+      {`${btnText}`}</StyledBtn>
+    {isChatOn && multyChats.map(item => <PrivateChat initialMessages={item} />)}</>
 }

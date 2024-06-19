@@ -14,7 +14,7 @@ import { useSocket } from "../socketContext";
 import { BtnToHide } from "../Chat/ChatForm.styled";
 
 interface PrivateChatProps {
-  initialMessages: IItem[];
+  initialMessages?: IItem[];
 }
 
 
@@ -25,7 +25,7 @@ export const PrivateChat: React.FC<PrivateChatProps> = ({ initialMessages }: Pri
   const [isInviteOn, setIsInviteOn] = useState(false);
   const { socket } = useSocket();
   // const [invitation, setInvitation] = useState<IInvite>({ room: "", peer: "" });
-  const [content, setContent] = useState<IItem[]>(initialMessages);
+  const [content, setContent] = useState<IItem[]>(initialMessages ?? []);
   const [roomId, setRoomId] = useState("");
   const showHideChat = () => { setIsChatOn(prev => !prev) };
   const showHideInvite = () => { setIsInviteOn(prev => !prev) };
