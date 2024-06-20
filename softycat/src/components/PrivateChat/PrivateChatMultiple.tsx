@@ -70,5 +70,7 @@ export const PrivateChatMultiple: React.FC = () => {
   return <>
     <StyledBtn type="button" onClick={() => { showHideChat() }}>
       {`${btnText}`}</StyledBtn>
-    {isChatOn && multyChats.map(item => <PrivateChat initialMessages={item} />)}</>
+
+    {isChatOn && multyChats.length === 0 ? <PrivateChat initialMessages={[]} /> :
+      multyChats.map(item => <PrivateChat initialMessages={item} />)}</>
 }
